@@ -4,10 +4,10 @@ import React from "react";
 const items = () => {
   return (
     <>
-      <div>
+      <div className="px-24">
         <Link
-          href="#"
-          class="my-4 mx-14 flex flex-col items-center bg-white border border-gray-200 rounded-lg shadow md:flex-row md:h-48 md:max-w-2xl"
+          href="/description"
+          class="my-4 flex flex-col items-center bg-white border border-gray-200 rounded-lg shadow md:flex-row md:h-48 md:max-w-2xl"
         >
           <img
             class="object-cover rounded-t-lg md:h-full md:w-80 md:rounded-none md:rounded-s-lg"

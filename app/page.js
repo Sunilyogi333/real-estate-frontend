@@ -7,7 +7,6 @@ const page = () => {
   return (
     <>
     <Header />
-    <hr/>
     <Search />
     <div className='flex justify-between flex-wrap'>
     <Items />
