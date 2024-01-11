@@ -16,7 +16,7 @@ const Header = () => {
             <Link className="cursor-pointer" href="/">
               Buy
             </Link>
-            <Link className="cursor-pointer" href="/about">
+            <Link className="cursor-pointer" href="/sell">
               sell
             </Link>
           </div>

@@ -88,7 +88,6 @@ const about = () => {
                   </div>
                 </div>
                 <div>
-                  {/* get more info button */}
                   <Link
                     className="font-semibold bg-blue-200 text-blue-500 rounded px-10 py-4"
                     href="/agentInfo"
