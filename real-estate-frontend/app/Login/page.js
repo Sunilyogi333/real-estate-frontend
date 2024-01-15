@@ -6,6 +6,7 @@ import Item from "@/components/Item";
 import Image from "next/image";
 import Group from "/public/Images/Icons/Group.png";
 import serenity from "/public/Images/Icons/serenity.png";
+import Link from "next/link";
 const page = () => {
   const router = useRouter();
   const [formData, setFormData] = useState({
@@ -30,14 +31,14 @@ const page = () => {
     }
   }
   return (
-    <div className="flex justify-center items-center h-[100vh] w-full bg-red-600">
-      <div className="flex justify-center items-center rounded-md overflow-hidden w-[60vw] h-[80vh] bg-yellow-400">
-        <div className=" w-1/2 h-full p-6 bg-white shadow-md">
+    <div className="lg:flex lg:justify-center lg:items-center h-[100vh] w-full bg-gray-100">
+      <div className="h-full lg:flex lg:justify-center lg:items-center rounded-md overflow-hidden lg:w-[60vw] lg:h-[80vh] bg-yellow-400 shadow-[0_3px_10px_rgb(0,0,0,0.2)]">
+        <div className="w-full lg:w-1/2 h-full p-6 bg-white shadow-md">
           <div className="flex gap-2">
             <Image src={serenity} alt="" />
             <span className="font-bold text-gray-800 text-2xl">Serenity</span>
           </div>
-          <div className="py-20 px-20">
+          <div className="px-8 py-40 lg:py-20 lg:px-20">
             <h2 className="text-2xl font-semibold mb-4">
               Welcome!
             </h2>
@@ -54,8 +55,9 @@ const page = () => {
                   type="email"
                   id="email"
                   name="email"
+                  placeholder="hi@example.com"
                   onChange={handleInput}
-                  className="mt-1 p-2 w-full border rounded-md bg-blue-50"
+                  className="mt-1 px-3 p-2 w-full border rounded-md bg-blue-50"
                 />
               </div>
 
@@ -70,32 +72,33 @@ const page = () => {
                   type="password"
                   id="password"
                   name="password"
+                  placeholder="Enter password"
                   onChange={handleInput}
-                  className="mt-1 p-2 w-full border rounded-md bg-blue-50"
+                  className="mt-1 px-3 p-2 w-full border rounded-md bg-blue-50"
                 />
-                <p className="text-xs text-gray-500 mt-1">
-                  Password must be 8 characters long
+                <p className="text-sm text-blue-500 mt-1">
+                  forget password?
                 </p>
               </div>
 
               <button
                 type="submit"
-                className="bg-blue-500 text-white p-2 rounded-md w-full"
+                className="font-semibold mt-2 bg-blue-500 text-white p-2 rounded-md w-full"
               >
                 Login
               </button>
             </form>
+          <p className="mt-8 text-sm text-center text-gray-600">
+            Don't have an account?{" "}
+            <Link href="/Signup" className="font-semibold text-blue-500 mr-1">
+              Signup
+            </Link>
+          </p>
           </div>
 
-          <p className="mt-4 text-sm text-center text-gray-600">
-            Don't have an account?{" "}
-            <a href="#" className="text-blue-500">
-              Signup
-            </a>
-          </p>
         </div>
         {/* another div for showing one item inside it */}
-        <div className="w-1/2 h-full bg-blue-50 shadow-md relative">
+        <div className="hidden md:block w-1/2 h-full bg-blue-50 shadow-md relative">
           <Image src={Group}></Image>
           <div className="absolute top-28 left-16 p-4 bg-white">
             <Item />
