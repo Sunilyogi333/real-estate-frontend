@@ -1,4 +1,4 @@
-// File: /home/sunilnath/Documents/Coding/real-estate-frontend/real-estate-frontend/app/Login/page.js
+// File: /home/sunilnath/Documents/Coding/real-estate-project/real-estate-frontend/app/Login/page.js
 import * as entry from '../../../../app/Login/page.js'
 import type { ResolvingMetadata, ResolvingViewport } from 'next/dist/lib/metadata/types/metadata-interface.js'
 
