@@ -2,6 +2,7 @@
 
 # dependencies
 /real-estate-frontend/node_modules/
+/real-estate-backend/node_modules/
 node_modules/
 /.pnp
 .pnp.js
