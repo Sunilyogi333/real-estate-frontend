@@ -1,6 +1,6 @@
 "use client"
 import Filter from '@/components/Filter'
-import Header from '@/components/Header'
+import Header from '@/components/ui/header'
 import Item from '@/components/Item'
 import Items from '@/components/Items'
 import Search from '@/components/Search'
