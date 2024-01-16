@@ -1,4 +1,4 @@
-// File: P:\college\real-estate-project\real-estate-frontend\app\layout.js
+// File: /home/sunilnath/Documents/Coding/real-estate-project/real-estate-frontend/app/layout.js
 import * as entry from '../../../app/layout.js'
 import type { ResolvingMetadata, ResolvingViewport } from 'next/dist/lib/metadata/types/metadata-interface.js'
 
