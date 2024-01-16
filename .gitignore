@@ -14,7 +14,11 @@ node_modules/
 # next.js
 /real-estate-frontend/.next/
 /.next/
+real-estate-frontend/.next/
 /out/
+app-build-manifest.json
+real-estate-frontend/.next/static/
+real-estate-frontend/.next/server/
 
 # production
 /build
