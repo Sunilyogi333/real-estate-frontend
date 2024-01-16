@@ -1,5 +1,5 @@
 import About from '@/components/About'
-import Header from '@/components/Header'
+import Header from '@/components/ui/header'
 import Images from '@/components/Images'
 import Link from 'next/link'
 import React from 'react'
