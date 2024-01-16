@@ -1,13 +1,12 @@
 "use client"
-
-import Header from "@/components/ui/header";
-import ProfileDetails from "@/components/ProfileDetails";
-import EditProfile from "@/components/EditProfile";
+import Header from "@/components/shared/header";
+import ProfileDetails from "@/components/ui/ProfileDetails";
+import EditProfile from "@/components/ui/EditProfile";
 
 import { useState } from "react";
 
 const Profile = ()=>{
-    const dummyUser = {
+    const [updatedUser, setUpdatedUser] = useState({
         profileImage: 'images/icons/person.png',
         fullName: 'John Doe',
         numberOfListings: 100,
@@ -15,28 +14,30 @@ const Profile = ()=>{
         age: 32,
         email: 'john.doe@example.com',
         phoneNumber: '+1234567890',
-      };
-      const [editMode, setEditMode] = useState(false);
-
-      const handleEditClick = () => {
-        setEditMode(true);
+      });
+      const handleSaveChanges = () => {
+        // Handle saving changes to user details
+        console.log('Saving changes:', updatedUser);
+        
       };
     
-      const handleSaveChanges = (updatedUser) => {
-        // Handle saving changes to user details (you may want to implement this function)
-        console.log('Saving changes:', updatedUser);
-        setEditMode(false); // Switch back to view mode
-      };
+      
+      const [editProfileVisiblity,setEditProfileVisibility]=useState(false);
+    
 
-      return (
-        <>
-          <Header />
-          {editMode ? (
-            <EditProfile user={dummyUser} onSave={handleSaveChanges} />
-          ) : (
-            <ProfileDetails user={dummyUser} onEditClick={handleEditClick} />
-          )}
-        </>
-      );
+      const handleEditToogle=()=>{
+        console.log("Button clicked")
+       
+        setEditProfileVisibility(!editProfileVisiblity)
+      }
+   return(<>
+    <Header></Header>
+    <div className="flex justify-between px-6 pr-0">
+    <ProfileDetails user={updatedUser} editButtonClickAction={handleEditToogle} visibility={editProfileVisiblity} onUpdate={(user)=> setUpdatedUser(user)}> </ProfileDetails>
+    <EditProfile visibility={editProfileVisiblity} user={updatedUser} onSave={handleSaveChanges} onUpdate={(user)=> setUpdatedUser(user)}></EditProfile>
+    </div>
+    
+   
+   </>); 
 }
 export default Profile;

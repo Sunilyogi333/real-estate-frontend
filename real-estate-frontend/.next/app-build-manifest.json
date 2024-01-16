@@ -16,25 +16,10 @@
       "static/chunks/main-app.js",
       "static/chunks/app/Login/page.js"
     ],
-    "/sell/page": [
+    "/Signup/page": [
       "static/chunks/webpack.js",
       "static/chunks/main-app.js",
-      "static/chunks/app/sell/page.js"
-    ],
-    "/Property/page": [
-      "static/chunks/webpack.js",
-      "static/chunks/main-app.js",
-      "static/chunks/app/Property/page.js"
-    ],
-    "/description/page": [
-      "static/chunks/webpack.js",
-      "static/chunks/main-app.js",
-      "static/chunks/app/description/page.js"
-    ],
-    "/profile/page": [
-      "static/chunks/webpack.js",
-      "static/chunks/main-app.js",
-      "static/chunks/app/profile/page.js"
+      "static/chunks/app/Signup/page.js"
     ]
   }
 }

@@ -1,6 +1,6 @@
-import About from '@/components/About'
-import Header from '@/components/ui/header'
-import Images from '@/components/Images'
+import About from '@/components/ui/About'
+import Header from '@/components/shared/header'
+import Images from '@/components/ui/Images'
 import Link from 'next/link'
 import React from 'react'
 

@@ -1,10 +1,10 @@
 "use client"
-import Filter from '@/components/Filter'
-import Header from '@/components/ui/header'
-import Item from '@/components/Item'
-import Items from '@/components/Items'
-import Search from '@/components/Search'
-import { useHistory } from 'react-router-dom';
+import Filter from '@/components/ui/Filter'
+import Header from '@/components/shared/header'
+import Item from '@/components/ui/Item'
+// import Items from '@/components/ui/Items'
+import Search from '@/components/ui/Search'
+// import { useHistory } from 'react-router-dom';
 import React, { useEffect, useState } from 'react'
 
 
