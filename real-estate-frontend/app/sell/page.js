@@ -1,5 +1,5 @@
-import Header from "@/components/ui/header";
-import Properties from "@/components/Properties";
+import Header from "@/components/shared/header";
+import Properties from "@/components/ui/Properties";
 import Link from "next/link";
 import React from "react";
 

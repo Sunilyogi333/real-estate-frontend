@@ -11,7 +11,21 @@
       "static/chunks/main-app.js",
       "static/chunks/app/Signup/page.js"
     ],
+<<<<<<< HEAD
     "/Login/page": [
+=======
+    "/Signup/page": [
+      "static/chunks/webpack.js",
+      "static/chunks/main-app.js",
+      "static/chunks/app/Signup/page.js"
+    ],
+    "/Login/page": [
+      "static/chunks/webpack.js",
+      "static/chunks/main-app.js",
+      "static/chunks/app/Login/page.js"
+    ],
+    "/not-found": [
+>>>>>>> pragya
       "static/chunks/webpack.js",
       "static/chunks/main-app.js",
       "static/chunks/app/Login/page.js"
