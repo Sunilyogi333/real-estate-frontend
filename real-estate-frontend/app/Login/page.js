@@ -7,6 +7,7 @@ import Image from "next/image";
 import Group from "/public/Images/Icons/Group.png";
 import serenity from "/public/Images/Icons/serenity.png";
 import Link from "next/link";
+import Validation from './loginValidation';
 const page = () => {
   const router = useRouter();
   const [formData, setFormData] = useState({
@@ -14,12 +15,16 @@ const page = () => {
     password: "",
   });
 
+  const [error, setError] = useState({});
+
   const handleInput = (event) => {
     setFormData({ ...formData, [event.target.name]: event.target.value });
   };
 
   async function handleSubmit(event) {
     event.preventDefault();
+    const error = Validation(formData);
+    setError(error);
     const res = await axios.post("http://localhost:9000/login", formData);
     console.log("🚀 ~ handleSubmit ~ res:", res);
     if (res.data.success) {

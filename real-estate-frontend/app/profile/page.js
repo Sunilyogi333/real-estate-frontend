@@ -8,7 +8,7 @@ import { useState } from "react";
 
 const Profile = ()=>{
     const dummyUser = {
-        profileImage: 'images/icons/person.png',
+        profileImage: 'Images/Icons/person.png',
         fullName: 'John Doe',
         numberOfListings: 100,
         dateOfBirth: '1990-01-01',

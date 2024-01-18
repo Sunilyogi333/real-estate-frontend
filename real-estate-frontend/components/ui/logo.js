@@ -7,7 +7,7 @@ const Logo = () => {
       <div className="relative w-9">
         <Image
         fill
-            src="/images/icons/serenity.png"
+            src="/Images/Icons/serenity.png"
             alt=""
             className="w-full"
         />
