@@ -11,15 +11,15 @@ const items = () => {
       <div className="lg:mr-14">
         <Link
           href="/description"
-          class="my-4 flex flex-col  items-center bg-white border border-gray-200 rounded-lg shadow md:h-60 "
+          className="my-4 flex flex-col  items-center bg-white border border-gray-200 rounded-lg shadow md:h-60 "
         >
           <div className="border border-red-600">
             <img
-              class="object-cover rounded-t-lg md:h-full md:w-80 md:rounded-none md:rounded-s-lg"
+              className="object-cover rounded-t-lg md:h-full md:w-80 md:rounded-none md:rounded-s-lg"
               src="https://images.unsplash.com/photo-1605276374104-dee2a0ed3cd6?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
               alt=""
             />
-            <div class="flex flex-col p-5 self-start md:w-full">
+            <div className="flex flex-col p-5 self-start md:w-full">
               <p className="font-bold text-blue-400">NPR 2,400,000</p>
               <p className="text-xl font-bold py-2">House 1</p>
               <p className="text-sm text-gray-500">

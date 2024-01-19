@@ -8,27 +8,34 @@ const jwt = require("jsonwebtoken");
 const secretKey = "secretKey";
 const salt = 10;
 
-router.use(cors());
+router.use(
+  cors({
+    origin: ["http://localhost:3000"],
+    methods: ["POST", "GET"],
+    credentials: true,
+  })
+);
+
 router.use(express.json());
 
-const verifyJwt = (req, res, next) => {
-  const token = req.headers["access-token"];
+const verifyUser = (req, res, next) => {
+  const token = req.cookies.token;
   if (!token) {
-    res.status(401).json({ message: "No token provided" });
-    return;
+    return res.json({ Error: "You are not Authorized" });
+  } else {
+    jwt.verify(token, secretKey, (err, decoded) => {
+      if (err) {
+        return res.json({ Error: "Token is not valid" });
+      } else {
+        req.userId = decoded.userId;
+        next();
+      }
+    });
   }
-  jwt.verify(token, secretKey, (err, decoded) => {
-    if (err) {
-      res.status(401).json({ message: "Unauthorized" });
-      return;
-    }
-    req.userId = decoded.userId;
-    next();
-  });
 };
 
-router.get("/", verifyJwt, function (req, res, next) {
-  res.json({ message: "Authorized", success: true });
+router.get("/", verifyUser, (req, res, next) => {
+  res.json({Status:"Success", message: "Authorized", success: true, userId: req.userId });
 });
 
 router.get("/get", function (req, res) {
@@ -57,11 +64,15 @@ router.post("/login", function (req, res) {
   con.query(sql, [req.body.email], (err, result) => {
     if (err) return res.json({ Error: "Login error in server" });
     if (result.length === 0) return res.json({ Error: "User not found" });
-    bycrypt.compare(req.body.password.toString(),result[0].password,(err, passwordMatch) => {
+    bycrypt.compare(
+      req.body.password.toString(),
+      result[0].password,
+      (err, passwordMatch) => {
         if (err) return res.json({ Error: "Login error in server" });
         if (passwordMatch) {
           const userId = result[0].userId;
-          const token = jwt.sign({ userId }, secretKey);
+          const token = jwt.sign({ userId }, secretKey, { expiresIn: "1d" });
+          res.cookie("token", token);
           return res.json({ message: "Login success", success: true, token });
         } else {
           return res.json({ Error: "Password incorrect" });

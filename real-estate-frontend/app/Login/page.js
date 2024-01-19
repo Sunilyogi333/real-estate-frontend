@@ -9,11 +9,12 @@ import serenity from "/public/images/icons/serenity.png";
 import Link from "next/link";
 import Validation from './loginValidation';
 const page = () => {
-  const router = useRouter();
   const [formData, setFormData] = useState({
     email: "",
     password: "",
   });
+  const router = useRouter();
+  axios.defaults.withCredentials = true;
 
   const [error, setError] = useState({});
 

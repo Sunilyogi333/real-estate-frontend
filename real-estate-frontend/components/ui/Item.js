@@ -13,13 +13,13 @@ const Item = () => {
         <div className="border border-blue-200 bg-white overflow-hidden rounded-lg">
           <div className="w-full">
             <img
-              class="object-cover md:h-full md:w-full"
+              className="object-cover md:h-full md:w-full"
               src="https://images.unsplash.com/photo-1605276374104-dee2a0ed3cd6?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
               alt=""
             />
           </div>
 
-          <div class="flex flex-col self-start md:w-full px-6 py-6">
+          <div className="flex flex-col self-start md:w-full px-6 py-6">
              <div className="">
               <p className="font-bold text-blue-400 text-xl">NPR 2,400,000</p>
               <p className="text-xl font-bold py-2">House 1</p>
