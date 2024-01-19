@@ -6,21 +6,23 @@ import Item from '@/components/ui/Item'
 import Search from '@/components/ui/Search'
 // import { useHistory } from 'react-router-dom';
 import React, { useEffect, useState } from 'react'
+import axios from 'axios'
 
 
 const page = () => {
 
   useEffect(() =>{
-    fetch('http://localhost:9000/').then
-    (res => res.json())
-    .then(data => console.log(data.message))
+    axios.get('http://localhost:9000/',{
+      headers: {
+        'access-token' : localStorage.getItem('token')
+      }
+    })
+    .then(res =>{
+      console.log(res)
+    })
+    .catch(err => console.log(err))
   },[])
 
-  const [visible, setVisible] = useState(false)
-
-  const onClick = () => {
-    setVisible(!visible)
-  }
     return (
     <>
     <Header />

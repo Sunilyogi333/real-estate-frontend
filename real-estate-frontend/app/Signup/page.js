@@ -33,7 +33,7 @@ function page() {
     console.log("🚀 ~ handleSubmit ~ res:", res);
     if (res.data.success) {
       console.log(res);
-      router.push("/");
+      router.push("/Login");
     } else {
       console.log("s");
     }

@@ -28,8 +28,7 @@ const page = () => {
     const res = await axios.post("http://localhost:9000/login", formData);
     console.log("🚀 ~ handleSubmit ~ res:", res);
     if (res.data.success) {
-      localStorage.setItem("userId", res.data.data.userId);
-      console.log(res.data.us);
+      localStorage.setItem("token", res.data.token);
       router.push("/");
     } else {
       console.log("s");

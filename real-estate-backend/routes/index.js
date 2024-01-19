@@ -3,12 +3,30 @@ var router = express.Router();
 var con = require('./connection');
 const cors = require('cors');
 const upload = require("./multer");
+const jwt = require("jsonwebtoken");
+const secretKey = "secretKey";
 
 router.use(cors());
 router.use(express.json());
 
-router.get('/', function(req, res, next) {
-  res.json({ data: 'respond with a resource', message: 'success', success: true });
+const verifyJwt = (req, res, next) => {
+  const token = req.headers["access-token"];
+  if (!token) {
+    res.status(401).json({ message: "No token provided" });
+    return;
+  }
+  jwt.verify(token, secretKey, (err, decoded) => {
+    if (err) {
+      res.status(401).json({ message: "Unauthorized" });
+      return;
+    }
+    req.userId = decoded.userId;
+    next();
+  });
+};
+
+router.get('/',verifyJwt ,function(req, res, next) {
+  res.json({message: 'Authorized', success: true});
 });
 
 router.get("/get", function (req, res) {
@@ -58,12 +76,10 @@ router.post("/login", function (req, res) {
       res.status(401).json({ message: 'Invalid credentials', success: false  });
       return;
     }
-
     console.log(result)
-
-    res.status(200).json({ message: 'User successfully logged in', success: true,data:{
-      userId : result[0].userId,
-    } });
+    const userId = result[0].userId;
+    const token = jwt.sign({ userId }, secretKey);
+    return res.json({success: true, token });
   });
 }
 );
