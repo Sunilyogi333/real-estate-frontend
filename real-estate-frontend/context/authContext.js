@@ -1,25 +1,48 @@
-import React from "react";
+"use client";
+import React, { useEffect, useState } from "react";
 import { createContext } from "react";
-const authContext = createContext({
-  user: null,
-  login: () => {},
-  logout: () => {},
-  auth: false,
+import  Cookies  from "js-cookie";
+
+export const AuthContext = createContext({
+    userName: "",
+    login: () => {},
+    logout: () => {},
+    auth: false,
+    setAuth: () => {},
+    userId: null,
+    token: "",
 });
 
-export const AuthContextProvider = ({ children }) => {
+const AuthContextProvider = ({ children }) => {
+    const [userName, setUser] = useState("");
+    const [token, setToken] = useState(Cookies.get("token"));
+    const [userId, setUserId] = useState(null);
+    const [auth, setAuth] = useState(false);
+
+        const login = (user,auth) => {
+            setUser(user.name);
+            console.log(user.name);
+            setUserId(user.userId);
+            setAuth(auth);
+            console.log(user)
+          };
+    
+    const logout = () => {
+        setUser("");
+        setUserId(null);
+        setAuth(false);
+        setToken("");
+        return Cookies.remove("token");
+    };
+
+    const context = { userName, login, logout, auth, setAuth, userId, token};
   return (
-    <authContext.Provider
-      value={{
-        user: null,
-        login: () => {},
-        logout: () => {},
-        auth: false,
-      }}
+    <AuthContext.Provider
+      value={context}
     >
       {children}
-    </authContext.Provider>
+    </AuthContext.Provider>
   );
 };
 
-export default authContext;
+export default AuthContextProvider;

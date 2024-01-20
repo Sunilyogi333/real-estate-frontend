@@ -8,6 +8,9 @@ import Group from "/public/images/icons/Group.png";
 import serenity from "/public/images/icons/serenity.png";
 import Link from "next/link";
 import Validation from './loginValidation';
+import { useContext } from "react";
+import { AuthContext } from "@/context/authContext";
+
 const page = () => {
   const [formData, setFormData] = useState({
     email: "",
@@ -21,6 +24,8 @@ const page = () => {
   const handleInput = (event) => {
     setFormData({ ...formData, [event.target.name]: event.target.value });
   };
+  
+  const { login , auth } = useContext(AuthContext);
 
   async function handleSubmit(event) {
     event.preventDefault();
@@ -29,10 +34,11 @@ const page = () => {
     const res = await axios.post("http://localhost:9000/login", formData);
     console.log("🚀 ~ handleSubmit ~ res:", res);
     if (res.data.success) {
-      // localStorage.setItem("token", res.data.token);
+      console.log(res.data.user)
+      login(res.data.user, true);
       router.push("/");
     } else {
-      console.log("s");
+      console.log("failed");
     }
   }
   return (

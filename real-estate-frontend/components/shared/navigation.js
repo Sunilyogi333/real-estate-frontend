@@ -3,8 +3,11 @@ import Link from "next/link";
 import React, { useState } from "react";
 import { Button } from "./button";
 import Account from "./account";
+import { useContext } from "react";
+import { AuthContext } from "@/context/authContext";
 
-const Navigation = ({auth,setAuth}) => {
+const Navigation = () => {
+  const { auth } = useContext(AuthContext);
   const [isMenuOpen, setMenuOpen] = useState(false);
 
   const toggleMenu = () => {
@@ -33,7 +36,7 @@ const Navigation = ({auth,setAuth}) => {
 
       {auth ? (
         <>
-        <Account auth={auth} setAuth={setAuth}/>
+        <Account />
         </>
       ) : (
         <>

@@ -1,9 +1,8 @@
 import Link from "next/link";
-import React from "react";
+import React, { useContext } from "react";
 import Logo from "./logo";
 import Navigation from "./navigation";
-
-const Header = ({auth,setAuth}) => {
+const Header = () => {
   return (
       <header className="flex h-18 bg-white bg-opacity-30 backdrop-blur-xl w-full border-b-2 ">
         <div className="flex justify-between items-center w-full px-8 lg:px-24 py-3">
@@ -16,7 +15,7 @@ const Header = ({auth,setAuth}) => {
               sell
             </Link>
           </div>
-          <Navigation auth={auth} setAuth={setAuth}/>
+          <Navigation />
         </div>
       </header>
       

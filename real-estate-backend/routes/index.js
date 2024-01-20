@@ -71,15 +71,22 @@ router.post("/login", function (req, res) {
         if (err) return res.json({ Error: "Login error in server" });
         if (passwordMatch) {
           const userId = result[0].userId;
+          const name = result[0].username;
+          const user = { userId, name };
           const token = jwt.sign({ userId }, secretKey, { expiresIn: "1d" });
           res.cookie("token", token);
-          return res.json({ message: "Login success", success: true, token });
+          return res.json({ message: "Login success", success: true, token, user });
         } else {
           return res.json({ Error: "Password incorrect" });
         }
       }
     );
   });
+});
+
+router.get('/logout', (req, res) => {
+  res.clearCookie('token');
+  res.json({ message: 'Logout success' });
 });
 
 //add Properties

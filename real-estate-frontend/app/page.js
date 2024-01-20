@@ -1,12 +1,14 @@
 "use client";
 import Filter from "@/components/ui/Filter";
 import Header from "@/components/shared/header";
+import Footer from "@/components/shared/footer";
 import Item from "@/components/ui/Item";
 // import Items from '@/components/ui/Items'
 import Search from "@/components/ui/Search";
 // import { useHistory } from 'react-router-dom';
 import React, { useEffect, useState } from "react";
 import axios from "axios";
+// import AuthContext from "@/context/authContext";
 
 const page = () => {
   const [auth, setAuth] = useState(false);
@@ -45,7 +47,7 @@ const page = () => {
           <Filter />
         </div>
       </div>
-      <div>user id is {userId} and this is footer</div>
+      <Footer />
     </>
   );
 };

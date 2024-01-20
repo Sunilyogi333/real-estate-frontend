@@ -2,26 +2,17 @@ import React, { useEffect, useState } from "react";
 import Icons from "./icons";
 import Link from "next/link";
 import axios from "axios";
+import { AuthContext } from "@/context/authContext";
+import { useContext } from "react";
 
-const account = ({auth,setAuth}) => {
+const account = () => {
+    const { userName } = useContext(AuthContext);
     const [isDropdownVisible, setDropdownVisible] = useState(false);
 
     const toggleDropdown = () => {
       setDropdownVisible(!isDropdownVisible);
     };
 
-    const handleDelete = () => {
-      axios.get("http://localhost:9000/logout")
-      .then((res) => {
-        console.log(res.data);
-        setAuth(false);
-        console.log(auth);
-        location.reload(true);
-      })
-      .catch(err => console.log(err));
-    }
-
-  
   return (
     <>
       <div className="relative">
@@ -41,7 +32,7 @@ const account = ({auth,setAuth}) => {
               />
             </div>
             <div className="flex items-center justify-center">
-              <p className="font-semibold text-gray-800">Sunil Nath</p>
+              <p className="font-semibold text-gray-800">{userName}</p>
               <Icons type={"down"}></Icons>
             </div>
           </div>
@@ -68,8 +59,7 @@ const account = ({auth,setAuth}) => {
             Support
           </Link>
           <Link
-            href="#"
-            onClick={handleDelete}
+            href="/logout"
             className="text-left block px-4 py-2 text-gray-800 hover:underline border border-transparent"
           >
             Logout
