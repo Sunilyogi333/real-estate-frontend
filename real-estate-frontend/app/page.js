@@ -31,10 +31,10 @@ const page = () => {
 
   return (
     <>
-      <Header />
+      <Header auth={auth} setAuth={setAuth}/>
       <Search />
       <div className="px-12 lg:mx-48 flex flex-col md:flex-col md:justify-between lg:px-0 lg:justify-between lg:flex-row">
-        <div className="flex lg:gap-10 flex-wrap lg:w-3/4">
+        <div className="flex lg:gap-10 flex-wrap mt-8 lg:w-3/4">
           {Array(10)
             .fill()
             .map((_, i) => (
@@ -45,7 +45,7 @@ const page = () => {
           <Filter />
         </div>
       </div>
-      <div>user id is {userId}</div>
+      <div>user id is {userId} and this is footer</div>
     </>
   );
 };

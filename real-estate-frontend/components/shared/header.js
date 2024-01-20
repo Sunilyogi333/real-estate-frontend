@@ -3,10 +3,9 @@ import React from "react";
 import Logo from "./logo";
 import Navigation from "./navigation";
 
-const Header = () => {
+const Header = ({auth,setAuth}) => {
   return (
-    
-      <header className="flex h-16 bg-white bg-opacity-30 backdrop-blur-xl w-full border-b-2 ">
+      <header className="flex h-18 bg-white bg-opacity-30 backdrop-blur-xl w-full border-b-2 ">
         <div className="flex justify-between items-center w-full px-8 lg:px-24 py-3">
           <div className="flex gap-5 items-center">
             <Logo></Logo>
@@ -17,7 +16,7 @@ const Header = () => {
               sell
             </Link>
           </div>
-          <Navigation />
+          <Navigation auth={auth} setAuth={setAuth}/>
         </div>
       </header>
       

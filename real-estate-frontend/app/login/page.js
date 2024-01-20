@@ -29,7 +29,7 @@ const page = () => {
     const res = await axios.post("http://localhost:9000/login", formData);
     console.log("🚀 ~ handleSubmit ~ res:", res);
     if (res.data.success) {
-      localStorage.setItem("token", res.data.token);
+      // localStorage.setItem("token", res.data.token);
       router.push("/");
     } else {
       console.log("s");
@@ -37,7 +37,7 @@ const page = () => {
   }
   return (
     <div className="lg:flex lg:justify-center lg:items-center h-[100vh] w-full bg-gray-100">
-      <div className="h-full lg:flex lg:justify-center lg:items-center rounded-md overflow-hidden lg:w-[60vw] lg:h-[80vh] bg-yellow-400 shadow-[0_3px_10px_rgb(0,0,0,0.2)]">
+      <div className="h-full lg:flex lg:justify-center lg:items-center rounded-md overflow-hidden lg:w-[60vw] lg:h-[80vh] shadow-[0_3px_10px_rgb(0,0,0,0.2)]">
         <div className="w-full lg:w-1/2 h-full p-6 bg-white shadow-md">
           <div className="flex gap-2">
             <Image src={serenity} alt="" />
