@@ -5,6 +5,7 @@ const cors = require("cors");
 const upload = require("./multer");
 const bycrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
+const multer = require("multer");
 const secretKey = "secretKey";
 const salt = 10;
 
@@ -35,7 +36,12 @@ const verifyUser = (req, res, next) => {
 };
 
 router.get("/", verifyUser, (req, res, next) => {
-  res.json({Status:"Success", message: "Authorized", success: true, userId: req.userId });
+  res.json({
+    Status: "Success",
+    message: "Authorized",
+    success: true,
+    userId: req.userId,
+  });
 });
 
 router.get("/get", function (req, res) {
@@ -75,7 +81,12 @@ router.post("/login", function (req, res) {
           const user = { userId, name };
           const token = jwt.sign({ userId }, secretKey, { expiresIn: "1d" });
           res.cookie("token", token);
-          return res.json({ message: "Login success", success: true, token, user });
+          return res.json({
+            message: "Login success",
+            success: true,
+            token,
+            user,
+          });
         } else {
           return res.json({ Error: "Password incorrect" });
         }
@@ -84,55 +95,105 @@ router.post("/login", function (req, res) {
   });
 });
 
-router.get('/logout', (req, res) => {
-  res.clearCookie('token');
-  res.json({ message: 'Logout success' });
+router.get("/logout", (req, res) => {
+  res.clearCookie("token");
+  res.json({ message: "Logout success" });
 });
 
-//add Properties
-//Property table includes, name, location,price, bedrooms, bathrooms, squareArea, date, type, yearBuilt, city
-router.post("/addProperty", function (req, res) {
+// define add property route which will recieve 3 images inside images array and add them to file using multer and pass their path to database
+
+router.post("/addProperty", upload.array('images', 3) , function (req, res) {
+  const images = req.images;
+  console.log(req.images)
+  console.log("body:", req.body)
+  console.log("files:", req.files)
+  console.log("images:", images)
+  console.log(images);
+  
   var userId = req.body.userId;
-  var name = req.body.name;
+  var propertyName = req.body.propertyName;
   var location = req.body.location;
-  var price = req.body.price;
+  var propertyType = req.body.propertyType;
   var bedrooms = req.body.bedrooms;
   var bathrooms = req.body.bathrooms;
-  var squareArea = req.body.squareArea;
-  var date = req.body.date;
-  var type = req.body.type;
+  var kitchen = req.body.kitchen;
+  var price = req.body.price;
   var yearBuilt = req.body.yearBuilt;
-  var city = req.body.city;
-  var sql =
-    "INSERT INTO property (name, location, price, bedrooms, bathrooms, squareArea, date, type, yearBuilt, city) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
-  console.log("🚀 ~ sql:", sql);
-  con.query(
-    sql,
-    [
+  var size = req.body.size;
+  var parking = req.body.parking;
+  var garden = req.body.garden;
+  var fireplace = req.body.fireplace;
+  var cooling = req.body.cooling;
+  var heating = req.body.heating;
+  var laundry = req.body.laundry;
+  var date = req.body.date;
+  var description = req.body.description;
+
+
+  //Start transaction
+  con.beginTransaction(function (err) {
+    if (err) {
+      return res.json({ Error: "Error starting transaction" });
+    }
+
+    var propertySql =
+      "INSERT INTO properties (userId, propertyName, location, propertyType, bedrooms, bathrooms, kitchen, price, yearBuilt, size, parking, garden, fireplace, cooling, heating, laundry, date, description) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+    var propertyValues = [
       userId,
-      name,
+      propertyName,
       location,
-      price,
+      propertyType,
       bedrooms,
       bathrooms,
-      squareArea,
-      date,
-      type,
+      kitchen,
+      price,
       yearBuilt,
-      city,
-    ],
-    function (err, result) {
+      size,
+      parking,
+      garden,
+      fireplace,
+      cooling,
+      heating,
+      laundry,
+      date,
+      description,
+    ];
+
+    con.query(propertySql, propertyValues, function (err, propertyResult) {
       if (err) {
-        console.error(err);
-        res.status(500).json({ message: "Internal Server Error" });
-        return;
+        return con.rollback(function () {
+          return res.json({ Error: "Error inserting property data" });
+        });
       }
 
-      res
-        .status(200)
-        .json({ message: "Property successfully added", success: true });
-    }
-  );
-});
+      var propertyId = propertyResult.propertyId;
 
+      var imagesSql =
+        "INSERT INTO propertyImages (propertyId, image1, image2, image3) VALUES (?, ?, ?, ?)";
+      var imagesValues = [propertyId, image1, image2, image3];
+
+      con.query(imagesSql, imagesValues, function (err, imagesResult) {
+        if (err) {
+          return con.rollback(function () {
+            return res.json({ Error: "Error inserting property images" });
+          });
+        }
+
+        // Commit the transaction if everything is successful
+        con.commit(function (err) {
+          if (err) {
+            return con.rollback(function () {
+              return res.json({ Error: "Error committing transaction" });
+            });
+          }
+
+          return res.json({
+            message: "Property successfully added",
+            success: true,
+          });
+        });
+      });
+    });
+  });
+});
 module.exports = router;
