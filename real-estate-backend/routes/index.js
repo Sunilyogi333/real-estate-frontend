@@ -16,6 +16,8 @@ router.use(
   })
 );
 
+router.use(express.static("public"));
+
 router.use(express.json());
 
 const verifyUser = (req, res, next) => {
@@ -220,5 +222,26 @@ router.post(
     });
   }
 );
+
+router.get("/getProperties", (req, res) => {
+  const sql = `
+   SELECT * FROM users 
+   LEFT JOIN property
+   ON users.userId = property.userId
+   INNER JOIN propertyImages 
+   ON property.propertyId = propertyImages.propertyId;
+
+  `;
+
+  con.query(sql, (err, result) => {
+    console.log("result: ", result);
+    if (err) {
+      console.error("Error fetching properties:", err);
+      return res.status(500).json({ error: "Internal Server Error" });
+    }
+
+    res.json(result);
+  });
+});
 
 module.exports = router;

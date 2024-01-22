@@ -11,18 +11,31 @@ import axios from "axios";
 import AuthContext from "@/context/authContext";
 
 const page = () => {
+  const [properties, setProperties] = useState([]);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const response = await axios.get("http://localhost:9000/getProperties");
+        setProperties(response.data); // Array of properties
+      } catch (error) {
+        console.error("Error fetching properties:", error);
+      }
+    };
+
+    fetchData();
+  }, []);
+  console.log("Properties:", properties);
 
   return (
     <>
-      <Header/>
+      <Header />
       <Search />
       <div className="px-12 lg:mx-48 flex flex-col md:flex-col md:justify-between lg:px-0 lg:justify-between lg:flex-row">
         <div className="flex lg:gap-10 flex-wrap mt-8 lg:w-3/4">
-          {Array(10)
-            .fill()
-            .map((_, i) => (
-              <Item key={i} />
-            ))}
+          {properties.map((properties, index) => (
+            <Item key={index} properties={properties} />
+          ))}
         </div>
         <div className="w-1/4 ">
           <Filter />

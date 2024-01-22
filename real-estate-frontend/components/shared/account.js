@@ -7,6 +7,8 @@ import { useContext } from "react";
 
 const account = () => {
     const userName = localStorage.getItem("serenity@username");
+    const firstName = userName.split(" ")[0];
+
     const [isDropdownVisible, setDropdownVisible] = useState(false);
 
     const toggleDropdown = () => {
@@ -32,7 +34,7 @@ const account = () => {
               />
             </div>
             <div className="flex items-center justify-center">
-              <p className="font-semibold text-gray-800">{userName}</p>
+              <p className="font-semibold text-gray-800">{firstName}</p>
               <Icons type={"down"}></Icons>
             </div>
           </div>
