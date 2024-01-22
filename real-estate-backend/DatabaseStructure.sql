@@ -48,3 +48,6 @@ CREATE TABLE propertyImages (
     image3 VARCHAR(255),
     CONSTRAINT propertyId FOREIGN KEY(propertyId) REFERENCES property(propertyId)
 );
+
+/* all data select */
+SELECT * FROM users LEFT JOIN property ON users.userId = property.userId INNER JOIN propertyImages ON property.propertyId = propertyImages.propertyId;

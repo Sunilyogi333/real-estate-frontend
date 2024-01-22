@@ -13,6 +13,7 @@ const Navigation = () => {
   const toggleMenu = () => {
     setMenuOpen(!isMenuOpen);
   };
+  console.log(auth);  
 
   return (
     <div className="flex justify-between items-center text-center">

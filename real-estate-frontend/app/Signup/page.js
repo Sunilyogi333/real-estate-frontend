@@ -128,7 +128,7 @@ function page() {
             </form>
             <p className="mt-8 text-sm text-center text-gray-600">
               Already have an account?
-              <Link href="/Login" className="font-semibold text-blue-500 mr-1">
+              <Link href="/login" className="font-semibold text-blue-500 mr-1">
                 Login
               </Link>
             </p>

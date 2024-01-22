@@ -94,11 +94,6 @@ router.post("/login", function (req, res) {
   });
 });
 
-router.get("/logout", (req, res) => {
-  res.clearCookie("token");
-  res.json({ message: "Logout success" });
-});
-
 router.post(
   "/addProperty",
   upload.fields([
@@ -225,4 +220,5 @@ router.post(
     });
   }
 );
+
 module.exports = router;

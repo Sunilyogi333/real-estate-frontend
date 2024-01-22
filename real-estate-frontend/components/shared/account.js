@@ -6,7 +6,7 @@ import { AuthContext } from "@/context/authContext";
 import { useContext } from "react";
 
 const account = () => {
-    const { userName } = useContext(AuthContext);
+    const userName = localStorage.getItem("serenity@username");
     const [isDropdownVisible, setDropdownVisible] = useState(false);
 
     const toggleDropdown = () => {

@@ -7,7 +7,7 @@ import { AuthContext } from "@/context/authContext";
 import { useContext } from "react";
 
 const page = () => {
-  const { userId } = useContext(AuthContext);
+  const userId = localStorage.getItem("serenity@userId");
   const [formData, setFormData] = useState({
     userId: userId,
     propertyName: "",
@@ -69,7 +69,7 @@ const page = () => {
           <h1 className="text-2xl font-bold mb-4 text-blue-500">
             Add Property Details
           </h1>
-          <form onSubmit={handleSubmit} encType="multipart/form-data">
+          <form onSubmit={(e) => { e.preventDefault(); handleSubmit(); }} encType="multipart/form-data">
             {/* Mandatory Details */}
             <div className="lg:p-4 border border-blue-200 rounded-md">
               <div className="mb-8">
