@@ -7,7 +7,7 @@ import Link from "next/link";
 const about = () => {
   return (
     <>
-      <div className="flex lg:mx-40 border lg:w-10/12 flex-wrap">
+      <div className="flex lg:mx-40 lg:w-10/12 flex-wrap">
         <div className="hello lg:w-3/5 md:flex-wrap lg:pr-4">
           <div className="flex justify-around lg:w-full border rounded lg:px-10 py-2 h-max flex-wrap">
             <div>
@@ -101,11 +101,14 @@ const about = () => {
         <div className="border border-blue-500 rounded-md lg:w-96  lg:p-4 h-full">
           <p className="font-normal text-sm  text-gray-500">Price</p>
           <p className="font-bold text-blue-400">NPR 2,600,000</p>
-          <p className="font-bold ">Contact info</p>
-          <div>
+          <hr className="my-3"/>
+          <p className="font-bold text-xl">Contact info</p>
+          <div className="flex gap-2 mt-3">
+          <Icons type="gmail"></Icons>
             <span>sunilnath0109@gmail.com</span>
           </div>
-          <div>
+          <div className="flex gap-2 mt-3">
+          <Icons type="phone"></Icons>
             <span>9828000000</span>
           </div>
         </div>

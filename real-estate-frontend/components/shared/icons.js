@@ -37,6 +37,14 @@ const Icons = ({ type }) => {
     url = "/images/icons/line.png";
     ht = 1;
     wt = 2;
+  } else if (type == "gmail"){
+    url = "/images/icons/gmail.png";
+    ht = 24;
+    wt = 24;
+  } else if (type == "phone"){
+    url = "/images/icons/phone.png"
+    ht = 24;
+    wt = 24;
   }
 
   return (

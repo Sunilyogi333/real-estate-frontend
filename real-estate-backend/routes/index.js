@@ -108,13 +108,6 @@ router.post(
     const image2 = req.files["image2"][0].filename;
     const image3 = req.files["image3"][0].filename;
 
-    console.log("images path");
-    console.log(image1);
-    console.log(image2);
-    console.log(image3);
-    console.log("body:", req.body);
-    console.log("file:", req.files);
-
     var userId = req.body.userId;
     var propertyName = req.body.propertyName;
     var location = req.body.location;
@@ -132,7 +125,7 @@ router.post(
     var heating = req.body.heating;
     var laundry = req.body.laundry;
     var date = req.body.date;
-    var description = "hello";
+    var description = req.body.description;
 
     con.beginTransaction(function (err) {
       if (err) {
@@ -141,48 +134,10 @@ router.post(
 
       var propertySql =
         "INSERT INTO property(userId, propertyName, location, propertyType, bedrooms, bathrooms, kitchen, price, yearBuilt, size, parking, garden, fireplace, cooling, heating, laundry, description) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
-      var propertyValues = [
-        userId,
-        propertyName,
-        location,
-        propertyType,
-        bedrooms,
-        bathrooms,
-        kitchen,
-        price,
-        yearBuilt,
-        size,
-        parking,
-        garden,
-        fireplace,
-        cooling,
-        heating,
-        laundry,
-        description,
-      ];
+      var propertyValues = [userId,propertyName,location,propertyType,bedrooms,bathrooms,kitchen,price,yearBuilt,size,parking,garden,fireplace,cooling,heating,laundry,description];
 
       con.query(
-        propertySql,
-        [
-          userId,
-          propertyName,
-          location,
-          propertyType,
-          bedrooms,
-          bathrooms,
-          kitchen,
-          price,
-          yearBuilt,
-          size,
-          parking,
-          garden,
-          fireplace,
-          cooling,
-          heating,
-          laundry,
-          description,
-        ],
-        function (err, propertyResult) {
+        propertySql,propertyValues,function (err, propertyResult) {
           console.log("propertyValues: ", propertyValues);
           console.log("propertyResult: ", propertyResult);
           if (err) {
@@ -203,7 +158,7 @@ router.post(
               });
             }
 
-            // Commit the transaction if everything is successful
+            // Commit the transaction if everything is successfull
             con.commit(function (err) {
               if (err) {
                 return con.rollback(function () {
@@ -226,7 +181,7 @@ router.post(
 router.get("/getProperties", (req, res) => {
   const sql = `
    SELECT * FROM users 
-   LEFT JOIN property
+   INNER JOIN property
    ON users.userId = property.userId
    INNER JOIN propertyImages 
    ON property.propertyId = propertyImages.propertyId;

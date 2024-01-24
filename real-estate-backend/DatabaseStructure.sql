@@ -2,7 +2,6 @@
 CREATE DATABASE serenity;
 
 /* tables */
-
 /* users */
 CREATE TABLE users (
     userId INT PRIMARY KEY AUTO_INCREMENT,
@@ -37,8 +36,6 @@ CREATE TABLE property (
     date DATE,
     CONSTRAINT userId FOREIGN KEY(userId) REFERENCES users(userId)
 );
-
-
 /* propertyImages */
 CREATE TABLE propertyImages (
     propertyImageId INT PRIMARY KEY AUTO_INCREMENT,
