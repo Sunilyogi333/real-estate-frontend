@@ -1,6 +1,6 @@
 import React from "react";
 
-const Features = () => {
+const Features = ({propertyDetails}) => {
   return (
     <>
       <div className="">
@@ -9,7 +9,7 @@ const Features = () => {
           <div className="lg:w-96 ">
             <div className="flex justify-between mb-1">
               <p className="text-gray-700">Listed On</p>
-              <p className="font-semibold">12/12/2021</p>
+              <p className="font-semibold">{propertyDetails.date}</p>
             </div>
             <div className="flex justify-between mb-1">
               <p className="text-gray-700">Data available</p>
@@ -17,33 +17,33 @@ const Features = () => {
             </div>
             <div className="flex justify-between mb-1">
               <p className= "text-gray-700">Type</p>
-              <p className="font-semibold">Home</p>
+              <p className="font-semibold">{propertyDetails.propertyType}</p>
             </div>
             <div className="flex justify-between mb-1">
               <p className= "text-gray-700">Laundary</p>
-              <p className="font-semibold">In unit</p>
+              <p className="font-semibold">{propertyDetails.laundry}</p>
             </div>
             <div className="flex justify-between mb-1">
               <p className= "text-gray-700">Cooling</p>
-              <p className="font-semibold">Air Conditioner</p>
+              <p className="font-semibold">{propertyDetails.cooling}</p>
             </div>
             <div className="flex justify-between mb-1">
               <p className= "text-gray-700">Heating</p>
-              <p className="font-semibold">Forced Air</p>
+              <p className="font-semibold">{propertyDetails.heating}</p>
             </div>
           </div>
           <div className="lg:w-96 ">
           <div className="flex justify-between mb-1">
               <p className= "text-gray-700">City</p>
-              <p className="font-semibold">Itahari</p>
+              <p className="font-semibold">{propertyDetails.location}</p>
             </div>
             <div className="flex justify-between mb-1">
               <p className= "text-gray-700">Year Built</p>
-              <p className="font-semibold">2018</p>
+              <p className="font-semibold">{propertyDetails.yearBuilt}</p>
             </div>
             <div className="flex justify-between mb-1">
               <p className= "text-gray-700">Size</p>
-              <p className="font-semibold">2,173 sqft</p>
+              <p className="font-semibold">{propertyDetails.size} sqft</p>
             </div>
             <div className="flex justify-between mb-1">
               <p className= "text-gray-700">Lot size</p>

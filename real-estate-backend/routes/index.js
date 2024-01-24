@@ -199,4 +199,32 @@ router.get("/getProperties", (req, res) => {
   });
 });
 
+router.get("/getProperty/:description", (req, res) => {
+  const propertyId = req.params.description;
+  console.log("req.params: ", req.params);
+  console.log("propertyId: ", propertyId);
+
+  const sql = `
+    SELECT * FROM users 
+    INNER JOIN property
+    ON users.userId = property.userId
+    INNER JOIN propertyImages 
+    ON property.propertyId = propertyImages.propertyId
+    WHERE property.propertyId = ?;
+  `;
+
+  con.query(sql, [propertyId], (err, result) => {
+    if (err) {
+      console.error("Error fetching property details:", err);
+      return res.status(500).json({ error: "Internal Server Error" });
+    }
+
+    if (result.length === 0) {
+      return res.status(404).json({ error: "Property not found" });
+    }
+
+    res.json(result[0]); // Assuming you only expect one property
+  });
+});
+
 module.exports = router;

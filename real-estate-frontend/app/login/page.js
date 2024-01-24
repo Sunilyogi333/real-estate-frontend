@@ -11,7 +11,7 @@ import Validation from './loginValidation';
 import { useContext } from "react";
 import { AuthContext } from "@/context/authContext";
 
-const page = (properties) => {
+const page = () => {
   const [formData, setFormData] = useState({
     email: "",
     password: "",
