@@ -46,12 +46,12 @@ const Features = ({propertyDetails}) => {
               <p className="font-semibold">{propertyDetails.size} sqft</p>
             </div>
             <div className="flex justify-between mb-1">
-              <p className= "text-gray-700">Lot size</p>
-              <p className="font-semibold">9,060</p>
+              <p className= "text-gray-700">Kitchen</p>
+              <p className="font-semibold">{propertyDetails.kitchen}</p>
             </div>
             <div className="flex justify-between mb-1">
               <p className= "text-gray-700">Parking Area</p>
-              <p className="font-semibold">Yes</p>
+              <p className="font-semibold">{propertyDetails.parking}</p>
             </div>
             <div className="flex justify-between mb-1">
               <p className= "text-gray-700">Deposit</p>

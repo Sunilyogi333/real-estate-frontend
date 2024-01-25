@@ -15,11 +15,11 @@ const ProfileDetails = ({user,visibility,editButtonClickAction})=>{
         editButtonClickAction(); // Call the parent component's function
       };
     const {
-        profileImage,
-        fullName,
+        profilePicture,
+        username,
         numberOfListings,
-        dateOfBirth,
-        age,
+        date_of_birth,
+        // age,
         email,
         phoneNumber,
       } = user;
@@ -28,11 +28,13 @@ const ProfileDetails = ({user,visibility,editButtonClickAction})=>{
     <div className="bg-white p-6 rounded-md shadow-md w-96">
         <div className="flex-col items-center border-b border-green-500">
             <div className="rounded-full overflow-hidden w-16 h-16 mr-4">
-                <img src={profileImage} alt="Profile" className="w-full h-full object-cover" />
+                <img src={`http://localhost:9000/images/uploads/${profilePicture}`}
+                alt="Profile"
+                 className="w-full h-full object-cover" />
             </div>
             <div className="flex justify-between ">
                 <div className="flex-col">
-                    <p className="font-bold text-2xl">{fullName}</p>
+                    <p className="font-bold text-2xl">{username}</p>
                     <p className="text-gray-500 text-sm">{`${numberOfListings} listings`}</p>
                 </div>
                 <div>
@@ -44,12 +46,12 @@ const ProfileDetails = ({user,visibility,editButtonClickAction})=>{
         <ul className="mt-4 space-y-4 pl-0">
         <li className="border-b border-green-500 pb-2 flex justify-between items-center pl-0">
           <span className="text-gray-400 text-sm">Date of Birth:</span>
-          <span>{dateOfBirth}</span>
+          <span>{date_of_birth.split('T')[0]}</span>
         </li>
-        <li className="border-b border-green-500 pb-2 flex justify-between items-center pl-0">
+        {/* <li className="border-b border-green-500 pb-2 flex justify-between items-center pl-0">
           <span className="text-gray-400 text-sm">Age:</span>
           <span>{age}</span>
-        </li>
+        </li> */}
         <li className="border-b border-green-500 pb-2 flex justify-between items-center pl-0">
           <span className="text-gray-400 text-sm">Email:</span>
           <span>{email}</span>

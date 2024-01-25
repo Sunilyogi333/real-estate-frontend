@@ -1,13 +1,29 @@
+"use client"
 import Header from "@/components/shared/header";
 import Properties from "@/components/ui/Properties";
 import Link from "next/link";
-import React from "react";
+import React, { useEffect, useState } from "react";
+import axios from "axios";
 
 const page = () => {
+  const [Myproperties, setMyProperties] = React.useState([]);
+  const userId = localStorage.getItem("serenity@userId");
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const response = await axios.get("http://localhost:9000/getMyProperties/"+userId);
+        setMyProperties(response.data); // Array of properties
+      } catch (error) {
+        console.error("Error fetching properties:", error);
+      }
+    };
+    fetchData();
+  }, []);
+  console.log("Myproperties: ", Myproperties);
   return (
     <>
       <Header />
-      <div className="border border-blue-400 rounded-md mx-4 md:mx-8 lg:mx-16 xl:mx-32">
+      <div className="border border-blue-400 rounded-md mx-4 md:mx-8 lg:mx-16 xl:mx-32 mt-4">
         <div className="flex flex-col md:flex-row justify-between flex-wrap h-full border py-6 px-4">
           <div className="flex flex-col md:flex-row gap-4 overflow-hidden w-full md:w-auto">
             <div className="text-center md:text-left">
@@ -29,7 +45,7 @@ const page = () => {
           </div>
         </div>
         <div>
-          <Properties />
+          <Properties Myproperties={Myproperties}/>
         </div>
       </div>
     </>

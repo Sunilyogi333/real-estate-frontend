@@ -11,7 +11,7 @@ const salt = 10;
 router.use(
   cors({
     origin: ["http://localhost:3000"],
-    methods: ["POST", "GET"],
+    methods: ["POST", "GET", "PUT", "DELETE"],
     credentials: true,
   })
 );
@@ -94,6 +94,57 @@ router.post("/login", function (req, res) {
       }
     );
   });
+});
+
+
+router.get("/getUserProfile/:userId", (req, res) => {
+  const userId = req.params.userId;
+  console.log("req.params: ", userId);
+
+  const sql = `SELECT * FROM users WHERE userId = ?`;
+
+  con.query(sql, [userId], (err, result) => {
+    if (err) {
+      console.error("Error fetching user profile:", err);
+      return res.status(500).json({ error: "Internal Server Error" });
+    }
+
+    if (result.length === 0) {
+      return res.status(404).json({ error: "User not found" });
+    }
+
+    res.json(result[0]); // Assuming you only expect one user
+  });
+});
+
+router.put("/updateProfile",upload.single('profilePicture'), (req, res) => {
+  console.log("req.body: ", req.body); 
+  console.log("req.file: ", req.file);
+  const userId = req.body.userId;
+  const profilePicture = req.file.filename;
+  const username = req.body.username;
+  const numberOfListings = req.body.numberOfListings;
+  const date_of_birth = req.body.date_of_birth;
+  // const age = req.body.age;
+  // const email = req.body.email;
+  const phoneNumber = req.body.phoneNumber;
+
+  console.log('phpneNumber: ', phoneNumber);
+
+  const sql = `UPDATE users SET profilePicture = ?, username = ?, phoneNumber = ?, date_of_birth=? WHERE userId = ?`;
+
+  con.query(
+    sql,
+    [profilePicture, username, phoneNumber, date_of_birth, userId],
+    (err, result) => {
+      if (err) {
+        console.error("Error updating user profile:", err);
+        return res.status(500).json({ error: "Internal Server Error" });
+      }
+
+      res.json({ message: "Profile updated successfully", success: true });
+    }
+  );
 });
 
 router.post(
@@ -226,5 +277,75 @@ router.get("/getProperty/:description", (req, res) => {
     res.json(result[0]); // Assuming you only expect one property
   });
 });
+
+router.get("/getMyProperties/:userId", (req, res) => {
+  const userId = req.params.userId;
+  console.log("req.params: ", userId);
+
+  const sql = `
+    SELECT * FROM users 
+    INNER JOIN property
+    ON users.userId = property.userId
+    INNER JOIN propertyImages 
+    ON property.propertyId = propertyImages.propertyId
+    WHERE property.userId = ?;
+  `;
+
+  con.query(sql, [userId], (err, result) => {
+    if (err) {
+      console.error("Error fetching properties:", err);
+      return res.status(500).json({ error: "Internal Server Error" });
+    }
+
+    res.json(result);
+  });
+});
+
+// Add route to handle property deletion
+router.delete("/deleteProperty/:propertyId", (req, res) => {
+  const propertyId = req.params.propertyId;
+
+  // Begin transaction
+  con.beginTransaction(function (err) {
+    if (err) {
+      return res.json({ Error: "Error starting transaction" });
+    }
+
+    // Delete related images first
+    const deleteImagesSql = "DELETE FROM propertyImages WHERE propertyId = ?";
+    con.query(deleteImagesSql, [propertyId], function (err, imagesResult) {
+      if (err) {
+        return con.rollback(function () {
+          return res.json({ Error: "Error deleting property images" });
+        });
+      }
+
+      // Delete the property after deleting images
+      const deletePropertySql = "DELETE FROM property WHERE propertyId = ?";
+      con.query(deletePropertySql, [propertyId], function (err, propertyResult) {
+        if (err) {
+          return con.rollback(function () {
+            return res.json({ Error: "Error deleting property" });
+          });
+        }
+
+        // Commit the transaction if everything is successful
+        con.commit(function (err) {
+          if (err) {
+            return con.rollback(function () {
+              return res.json({ Error: "Error committing transaction" });
+            });
+          }
+
+          return res.json({
+            message: "Property successfully deleted",
+            success: true,
+          });
+        });
+      });
+    });
+  });
+});
+
 
 module.exports = router;
