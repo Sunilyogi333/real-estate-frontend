@@ -1,11 +1,15 @@
 import React from "react";
 
 const Search = () => {
+
+  const data={
+    listing:"10"
+  }
   return (
     <>
       <div className="px-8">
         <h1 className="pt-5 mx-4 md:mx-40 text-2xl font-semibold md:text-left">
-          1,780 listings in Nepal
+          {data.listing} listings in Nepal
         </h1>
         <p className="py-2 mx-4 md:mx-40 text-sm text-gray-500 md:text-left">
           Rent your next home at one of our properties
