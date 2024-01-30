@@ -6,10 +6,13 @@ import Icons from "../shared/icons";
 // import bbathroom from "../public/Images/Icons/bbathrooms.png";
 // import barea from "../public/Images/Icons/barea.png";
 
-const Item = () => {
+const Item = ({data}) => {
+  const propertyId = data.id;
+
+  
   return (
     <div className=" w-[21rem]">
-      <Link href="/description">
+      <Link href="/description" as={`/description/${propertyId}`} >
         <div className="border border-blue-200 bg-white overflow-hidden rounded-lg">
           <div className="w-full">
             <img
@@ -21,9 +24,9 @@ const Item = () => {
 
           <div class="flex flex-col self-start md:w-full px-6 py-6">
              <div className="">
-              <p className="font-bold text-blue-400 text-xl">NPR 2,400,000</p>
-              <p className="text-xl font-bold py-2">House 1</p>
-              <p className="text-sm text-gray-500">Bhaktapur, BAGMATI</p>
+              <p className="font-bold text-blue-400 text-xl">NPR {data.price}</p>
+              <p className="text-xl font-bold py-2">{data.name}</p>
+              <p className="text-sm text-gray-500">{data.location.city},{data.location.zone}</p>
               <hr className="my-4"/>
              </div>
 
@@ -32,17 +35,17 @@ const Item = () => {
                    
                  <div className="flex items-center gap-2">
                      <Icons type="bed"></Icons>
-                     <span className="text-xl">3</span>
+                     <span className="text-xl">{data.util.bed}</span>
                  </div>
                  <div className="flex items-center gap-2">
                      <Icons type="bath"></Icons>
-                     <span className="text-xl">3</span>
+                     <span className="text-xl">{data.util.bath}</span>
 
                  </div>
                  <div className="flex items-center gap-2">
                      <Icons type="area"></Icons>
                       <span className=" text-xl">
-                          6x7.5 m<sup>2</sup>
+                          {data.dimension.length}x{data.dimension.width}m<sup>2</sup>
                        </span>
                 </div>
               </div>
