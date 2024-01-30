@@ -4,8 +4,8 @@ import axios from "axios";
 import { useRouter } from "next/navigation";
 import Item from "@/components/ui/Item";
 import Image from "next/image";
-import Group from "/public/Images/Icons/Group.png";
-import serenity from "/public/Images/Icons/serenity.png";
+import Group from "/public/images/icons/Group.png";
+import serenity from "/public/images/icons/serenity.png";
 import Link from "next/link";
 const page = () => {
   const router = useRouter();
