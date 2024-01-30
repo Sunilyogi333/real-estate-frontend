@@ -6,6 +6,7 @@ import Item from '@/components/ui/Item'
 import Search from '@/components/ui/Search'
 // import { useHistory } from 'react-router-dom';
 import React, { useEffect, useState } from 'react'
+import Footer from '@/components/shared/footer'
 
 
 const page = () => {
@@ -37,9 +38,7 @@ const page = () => {
       <Filter />
     </div>
     </div>
-    <div>
-      footer
-    </div>
+    <Footer></Footer>
     </>
   )
 }
