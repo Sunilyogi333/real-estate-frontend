@@ -347,5 +347,68 @@ router.delete("/deleteProperty/:propertyId", (req, res) => {
   });
 });
 
+// Add route to handle property update
+
+router.put("/updateProperty",upload.fields([
+  { name: "image1", maxCount: 1 },
+  { name: "image2", maxCount: 1 },
+  { name: "image3", maxCount: 1 },
+]), (req, res) => {
+  console.log("req.body: ", req.body); 
+  console.log("req.file: ", req.file);
+  const propertyId = req.body.propertyId;
+  const image1 = req.files["image1"][0].filename;
+  const image2 = req.files["image2"][0].filename;
+  const image3 = req.files["image3"][0].filename;
+  const propertyName = req.body.propertyName;
+  const location = req.body.location;
+  const propertyType = req.body.propertyType;
+  const bedrooms = req.body.bedrooms;
+  const bathrooms = req.body.bathrooms;
+  const kitchen = req.body.kitchen;
+  const price = req.body.price;
+  const yearBuilt = req.body.yearBuilt;
+  const size = req.body.size;
+  const parking = req.body.parking;
+  const garden = req.body.garden;
+  const fireplace = req.body.fireplace;
+  const cooling = req.body.cooling;
+  const heating = req.body.heating;
+  const laundry = req.body.laundry;
+  const date = req.body.date;
+  const description = req.body.description;
+
+  console.log('propertyId: ', propertyId);
+
+  const sql = `UPDATE property SET propertyName = ?, location = ?, propertyType = ?, bedrooms = ?, bathrooms = ?, kitchen = ?, price = ?, yearBuilt = ?, size = ?, parking = ?, garden = ?, fireplace = ?, cooling = ?, heating = ?, laundry = ?, description = ? WHERE propertyId = ?`;
+
+  con.query(
+    sql,
+    [propertyName, location, propertyType, bedrooms, bathrooms, kitchen, price, yearBuilt, size, parking, garden, fireplace, cooling, heating, laundry, description, propertyId],
+    (err, result) => {
+      if (err) {
+        console.error("Error updating property:", err);
+        return res.status(500).json({ error: "Internal Server Error" });
+      }
+
+      const imagesSql = `UPDATE propertyImages SET image1 = ?, image2 = ?, image3 = ? WHERE propertyId = ?`;
+
+      con.query(
+        imagesSql,
+        [image1, image2, image3, propertyId],
+        (err, result) => {
+          if (err) {
+            console.error("Error updating property images:", err);
+            return res.status(500).json({ error: "Internal Server Error" });
+          }
+
+          res.json({ message: "Property updated successfully", success: true });
+        }
+      );
+    }
+  );
+}
+);
+
 
 module.exports = router;
