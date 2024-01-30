@@ -7,11 +7,12 @@ import Icons from "../shared/icons";
 // import barea from "../public/Images/Icons/barea.png";
 
 const Item = ({data}) => {
+  const propertyId = data.id;
 
   
   return (
     <div className=" w-[21rem]">
-      <Link href="/description">
+      <Link href="/description" as={`/description/${propertyId}`} >
         <div className="border border-blue-200 bg-white overflow-hidden rounded-lg">
           <div className="w-full">
             <img

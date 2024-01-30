@@ -11,6 +11,7 @@ import Footer from '@/components/shared/footer'
 
 const page = () => {
   const dummyData1={
+    id:1,
     price:"200000",
     name:"Bardaghat Villa 1",
     location:{city:"bardaghat",zone:"lumbini"},
@@ -18,6 +19,7 @@ const page = () => {
     dimension:{length:"7",width:"30"},
   }
   const dummyData2={
+    id:2,
     price:"200000",
     name:"Bardaghat Villa 2",
     location:{city:"bardaghat",zone:"lumbini"},
@@ -25,6 +27,7 @@ const page = () => {
     dimension:{length:"7",width:"30"},
   }
   const dummyData3={
+    id:3,
     price:"200000",
     name:"Bardaghat Villa 3",
     location:{city:"bardaghat",zone:"lumbini"},
@@ -32,6 +35,7 @@ const page = () => {
     dimension:{length:"7",width:"30"},
   }
   const dummyData4={
+    id:4,
     price:"200000",
     name:"Bardaghat Villa 4",
     location:{city:"bardaghat",zone:"lumbini"},
