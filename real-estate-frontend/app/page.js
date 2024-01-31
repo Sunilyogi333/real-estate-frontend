@@ -38,7 +38,7 @@ const page = () => {
           ))}
         </div>
         <div className="w-1/4 ">
-          <Filter />
+          {/* <Filter /> */}
         </div>
       </div>
       <Footer />
