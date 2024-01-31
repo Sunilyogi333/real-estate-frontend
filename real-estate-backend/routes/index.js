@@ -250,7 +250,8 @@ router.get("/getProperties", (req, res) => {
   });
 });
 
-router.get("/getProperty/:description", (req, res) => {
+router.get("/getProperty/:id", (req, res) => {
+  console.log("req.params: ", req.params);
   const propertyId = req.params.id;
   console.log("req.params: ", req.params);
   console.log("propertyId: ", propertyId);
