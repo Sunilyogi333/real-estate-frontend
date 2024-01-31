@@ -34,16 +34,19 @@ const EditProfile = ({ user, onSave, visibility, onUpdate }) => {
   //   // Assuming onSave is a function passed as a prop to handle saving changes
   //   onSave(editedUser);
   // };
+  // console.log('user profile', user.profilePicture);
 
   const handleSave = async () => {
     const formData = new FormData();
     if (editedUser.profilePicture) {
       formData.append('profilePicture', editedUser.profilePicture);
+    }else{
+      formData.append('profilePicture', user.profilePicture);
     }
     formData.append('userId', editedUser.userId);
     formData.append('username', editedUser.username);
     formData.append('numberOfListings', editedUser.numberOfListings);
-    formData.append('date_of_birth', editedUser.date_of_birth);
+    formData.append('date_of_birth', editedUser.date_of_birth.split('T')[0]);
     formData.append('phoneNumber', editedUser.phoneNumber);
 
     try {

@@ -251,7 +251,7 @@ router.get("/getProperties", (req, res) => {
 });
 
 router.get("/getProperty/:description", (req, res) => {
-  const propertyId = req.params.description;
+  const propertyId = req.params.id;
   console.log("req.params: ", req.params);
   console.log("propertyId: ", propertyId);
 

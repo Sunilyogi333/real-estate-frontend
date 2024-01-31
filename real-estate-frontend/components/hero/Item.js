@@ -17,11 +17,11 @@ const Item = ({ properties }) => {
   } = properties || {};
   // console.log(properties);
   // console.log('img',properties.image1);
-  console.log('imageeee',image1);
+  console.log('imageeee', image1);
 
   return (
     <div className="w-[21rem]">
-      <a href ={`/${propertyId}`}>
+      <Link href="/description" as={`/description/${propertyId}`} >
         <div className="border border-blue-200 bg-white overflow-hidden rounded-lg">
           <div className="w-full h-[223px] overflow-hidden">
             <img
@@ -61,9 +61,11 @@ const Item = ({ properties }) => {
             </div>
           </div>
         </div>
-      </a>
+      </Link>
     </div>
   );
 };
 
 export default Item;
+
+

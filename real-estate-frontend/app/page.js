@@ -1,14 +1,14 @@
-"use client";
-import Filter from "@/components/ui/Filter";
-import Header from "@/components/shared/header";
-import Footer from "@/components/shared/footer";
-import Item from "@/components/ui/Item";
+"use client"
+import Filter from '@/components/hero/Filter'
+import Header from '@/components/shared/header'
+import Item from '@/components/hero/Item'
 // import Items from '@/components/ui/Items'
-import Search from "@/components/ui/Search";
+import Search from '@/components/hero/Search'
 // import { useHistory } from 'react-router-dom';
 import React, { useEffect, useState } from "react";
 import axios from "axios";
-import AuthContext from "@/context/authContext";
+import AuthContext from "@/context/authContext";import Footer from '@/components/shared/footer'
+
 
 const page = () => {
   const [properties, setProperties] = useState([]);

@@ -2,7 +2,7 @@
 import React, { useState } from "react";
 import axios from "axios";
 import { useRouter } from "next/navigation";
-import Item from "@/components/ui/Item";
+import Item from "@/components/hero/Item";
 import Image from "next/image";
 import Group from "/public/images/icons/Group.png";
 import serenity from "/public/images/icons/serenity.png";
