@@ -4,6 +4,7 @@ import Properties from "@/components/ui/Properties";
 import Link from "next/link";
 import React, { useEffect, useState } from "react";
 import axios from "axios";
+import Footer from "@/components/shared/footer";
 
 const page = () => {
   const [Myproperties, setMyProperties] = React.useState([]);
@@ -48,6 +49,7 @@ const page = () => {
           <Properties Myproperties={Myproperties}/>
         </div>
       </div>
+      <Footer />
     </>
   );
 };

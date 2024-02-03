@@ -5,6 +5,7 @@ import Images from '@/components/ui/Images'
 import Link from 'next/link'
 import React, { useEffect, useState } from 'react'
 import axios from 'axios'
+import Footer from '@/components/shared/footer'
 
 const page = ({ params }) => {
   console.log('params', params);
@@ -35,6 +36,7 @@ const page = ({ params }) => {
       <p className="text-sm text-gray-500 mx-40">{propertyDetails.location}</p>
       <Images propertyDetails={propertyDetails}/>
       <About propertyDetails={propertyDetails}/>
+      <Footer />
     </div>
   )
 }

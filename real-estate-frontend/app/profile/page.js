@@ -5,6 +5,7 @@ import EditProfile from "@/components/ui/EditProfile";
 import axios from "axios";
 
 import { useEffect, useState } from "react";
+import Footer from "@/components/shared/footer";
 
 const Profile = ()=>{
   const userId = localStorage.getItem("serenity@userId");
@@ -94,6 +95,7 @@ const Profile = ()=>{
     <ProfileDetails user={updatedUser} editButtonClickAction={handleEditToogle} visibility={editProfileVisiblity} onUpdate={(user)=> setUpdatedUser(user)}> </ProfileDetails>
     <EditProfile visibility={editProfileVisiblity} user={updatedUser}  onUpdate={(user)=> setUpdatedUser(user)}></EditProfile>
     </div>
+    <Footer></Footer>
     {/* onSave={handleSaveChanges} -removed it from Edited Profile*/}
    
    </>); 
