@@ -1,15 +1,25 @@
 var mysql = require('mysql');
-var con = mysql.createConnection({
-    host: 'localhost',
-    user: 'sunil',
-    password: "Sunil@333",
-    database: 'serenity',
+var con = mysql.createPool({
+    host: process.env.host,
+    user: process.env.user,
+    password: process.env.password,
+    database: process.env.database,
     port: 3306,
+    waitForConnections: true,
+    connectionLimit: 10,
+    queueLimit: 0
 });
-con.connect(function (err) {
-    if (err) throw err;
-    console.log("Connected!");
-}
-);
+pool.getConnection((err, conn) => {
+    if(err) console.log(err)
+    console.log("Connected successfully")
+})
 
-module.exports = con;
+module.exports = con.promise()
+
+// con.connect(function (err) {
+//     if (err) throw err;
+//     console.log("Connected!");
+// }
+// );
+
+// module.exports = con;
