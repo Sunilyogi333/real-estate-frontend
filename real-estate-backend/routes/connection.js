@@ -1,5 +1,5 @@
 var mysql = require('mysql');
-const con = mysql.createPool({
+const pool = mysql.createPool({
     host: process.env.host, 
     user: process.env.username, 
     password: process.env.password,
@@ -9,9 +9,9 @@ const con = mysql.createPool({
     queueLimit: 0
 });
 
-con.getConnection((err, conn) => {
+pool.getConnection((err, conn) => {
     if(err) console.log(err)
     console.log("Connected successfully")
 })
 
-module.exports = con.promise()
+module.exports = pool.promise()
