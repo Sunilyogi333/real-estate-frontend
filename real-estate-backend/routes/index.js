@@ -3,7 +3,8 @@ var router = express.Router();
 var con = require("./connection");
 const cors = require("cors");
 const upload = require("./multer");
-const bycrypt = require("bcrypt");
+const bcrypt = require("bcrypt");
+const cookieParser = require("cookie-parser");
 const jwt = require("jsonwebtoken");
 const secretKey = "secretKey";
 const salt = 10;
@@ -19,6 +20,7 @@ router.use(
 router.use(express.static("public"));
 
 router.use(express.json());
+router.use(cookieParser());
 
 const verifyUser = (req, res, next) => {
   const token = req.cookies.token;
@@ -54,16 +56,42 @@ router.get("/get", function (req, res) {
 
 //signup
 router.post("/signup", function (req, res) {
-  bycrypt.hash(req.body.password.toString(), salt, (err, hash) => {
-    if (err) return res.json({ Error: "Error for hassing password" });
-    const values = [req.body.name, req.body.email, hash];
-    const sql = "INSERT INTO users (username, email, password) VALUES (?)";
-    con.query(sql, [values], function (err, result) {
-      if (err) return res.json({ Error: "Error for inserting data" });
-      return res.json({ message: "User succesfully registerd", success: true });
+  // Check if the email is already in use
+  const checkEmailQuery = "SELECT COUNT(userId) AS count FROM users WHERE email = ?";
+  con.query(checkEmailQuery, [req.body.email], function (err, result) {
+    if (err) {
+      return res.json({ Error: "Error checking email existence" });
+    }
+
+    // If email already exists, return an error
+    if (result[0].count > 0) {
+      return res.json({ Error: "Email already in use" });
+    }
+
+    // Email is not in use, proceed with hashing the password and inserting the user
+    bcrypt.hash(req.body.password.toString(), salt, (err, hash) => {
+      if (err) return res.json({ Error: "Error hashing password" });
+      const values = [req.body.name, req.body.email, hash];
+      const insertUserQuery = "INSERT INTO users (username, email, password) VALUES (?)";
+      con.query(insertUserQuery, [values], function (err, result) {
+        if (err) return res.json({ Error: "Error inserting data" });
+        return res.json({ message: "User successfully registered", success: true });
+      });
     });
   });
 });
+
+// router.post("/signup", function (req, res) {
+//   bycrypt.hash(req.body.password.toString(), salt, (err, hash) => {
+//     if (err) return res.json({ Error: "Error for hassing password" });
+//     const values = [req.body.name, req.body.email, hash];
+//     const sql = "INSERT INTO users (username, email, password) VALUES (?)";
+//     con.query(sql, [values], function (err, result) {
+//       if (err) return res.json({ Error: "Error for inserting data" });
+//       return res.json({ message: "User succesfully registerd", success: true });
+//     });
+//   });
+// }); 
 
 //login
 router.post("/login", function (req, res) {
@@ -71,7 +99,7 @@ router.post("/login", function (req, res) {
   con.query(sql, [req.body.email], (err, result) => {
     if (err) return res.json({ Error: "Login error in server" });
     if (result.length === 0) return res.json({ Error: "User not found" });
-    bycrypt.compare(
+    bcrypt.compare(
       req.body.password.toString(),
       result[0].password,
       (err, passwordMatch) => {
