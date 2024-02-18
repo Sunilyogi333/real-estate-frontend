@@ -19,6 +19,7 @@ function page() {
   });
 
   const [error, setError] = useState({});
+  const [serverError, setServerError] = useState();
 
   const handleInput = (event) => {
     setFormData({ ...formData, [event.target.name]: event.target.value });
@@ -30,12 +31,15 @@ function page() {
     setError(error);
 
     const res = await axios.post("http://localhost:9000/signup", formData);
-    console.log("🚀 ~ handleSubmit ~ res:", res);
     if (res.data.success) {
       console.log(res);
       router.push("/login");
     } else {
-      console.log("s");
+      console.log("🚀 ~ handleSubmit ~ res:", res);
+      setError(res.data)
+      // console.log("s");
+      setServerError(res.data.Error);
+      console.log(res.data.Error);
     }
   }
   return (
@@ -81,6 +85,7 @@ function page() {
                   </label>
                   <span className="text-xs text-red-500 italic mr-2">
                     {error.email}
+                    {serverError}
                   </span>
                 </div>
                 <input

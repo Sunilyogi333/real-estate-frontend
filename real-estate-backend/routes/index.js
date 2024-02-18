@@ -98,7 +98,7 @@ router.post("/login", function (req, res) {
   const sql = "SELECT * FROM users WHERE email = ?";
   con.query(sql, [req.body.email], (err, result) => {
     if (err) return res.json({ Error: "Login error in server" });
-    if (result.length === 0) return res.json({ Error: "User not found" });
+    if (result.length === 0) return res.json({ accountError: "User not found" });
     bcrypt.compare(
       req.body.password.toString(),
       result[0].password,
@@ -117,7 +117,7 @@ router.post("/login", function (req, res) {
             user,
           });
         } else {
-          return res.json({ Error: "Password incorrect" });
+          return res.json({ passwordError: "incorrect password" });
         }
       }
     );

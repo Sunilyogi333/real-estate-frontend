@@ -20,6 +20,7 @@ const page = () => {
   axios.defaults.withCredentials = true;
 
   const [error, setError] = useState({});
+  const [serverError, setServerError] = useState({});
 
   const handleInput = (event) => {
     setFormData({ ...formData, [event.target.name]: event.target.value });
@@ -38,6 +39,9 @@ const page = () => {
       login(res.data.user, true);
       router.push("/");
     } else {
+      console.log("res:", res.data);
+      setServerError(res.data);
+      console.log(serverError);
       console.log("failed");
     }
   }
@@ -56,12 +60,17 @@ const page = () => {
 
             <form onSubmit={handleSubmit}>
               <div className="mb-4">
-                <label
-                  htmlFor="email"
-                  className="block text-sm font-medium text-gray-600 "
-                >
-                  Email
-                </label>
+              <div className="flex items-center justify-between">
+                  <label
+                    htmlFor="email"
+                    className="block text-sm font-medium text-gray-600 "
+                  >
+                    Email
+                  </label>
+                  <span className="text-xs text-red-500 italic mr-2">
+                  {serverError.accountError}
+                  </span>
+                </div>
                 <input
                   type="email"
                   id="email"
@@ -73,12 +82,17 @@ const page = () => {
               </div>
 
               <div className="mb-4">
-                <label
-                  htmlFor="password"
-                  className="block text-sm font-medium text-gray-600"
-                >
-                  Password
-                </label>
+              <div className="flex items-center justify-between">
+                  <label
+                    htmlFor="password"
+                    className="block text-sm font-medium text-gray-600"
+                  >
+                    Password
+                  </label>
+                  <span className="text-xs text-red-500 italic mr-2">
+                  { serverError.passwordError}
+                  </span>
+                </div>
                 <input
                   type="password"
                   id="password"

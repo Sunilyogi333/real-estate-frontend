@@ -1,8 +1,6 @@
 {
-  "/description/[id]/page": "app/description/[id]/page.js",
-  "/sell/page": "app/sell/page.js",
+  "/signup/page": "app/signup/page.js",
   "/login/page": "app/login/page.js",
-  "/profile/page": "app/profile/page.js",
-  "/Property/page": "app/Property/page.js",
+  "/favicon.ico/route": "app/favicon.ico/route.js",
   "/page": "app/page.js"
 }
