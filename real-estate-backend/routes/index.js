@@ -11,9 +11,10 @@ const salt = 10;
 
 router.use(
   cors({
-    origin: ["http://localhost:3000"],
-    methods: ["POST", "GET", "PUT", "DELETE"],
     credentials: true,
+    origin: "http://localhost:3000",
+    methods: ["POST", "GET", "PUT", "DELETE"],
+    optionsSuccessStatus: 200,
   })
 );
 
@@ -22,14 +23,31 @@ router.use(express.static("public"));
 router.use(express.json());
 router.use(cookieParser());
 
+
+// const verifyUser = (req, res) => {
+//   const token = req.cookies.token;
+//   if (!token) {
+//     return res.json({ Error: "Unauthorized", status:false });
+//   } else {
+//      jwt.verify(token, secretKey, (err, decoded) => {
+//       if (err) {
+//         return res.json({ Error: "Token is not valid", status: false});
+//       } else {
+//         req.userId = decoded.userId;
+//         next();
+//       }
+//     });
+//   }
+// };
+
 const verifyUser = (req, res, next) => {
   const token = req.cookies.token;
   if (!token) {
-    return res.json({ Error: "You are not Authorized" });
+    res.redirect("http://localhost:3000/login");
   } else {
     jwt.verify(token, secretKey, (err, decoded) => {
       if (err) {
-        return res.json({ Error: "Token is not valid" });
+        res.redirect("http://localhost:3000/login");
       } else {
         req.userId = decoded.userId;
         next();
@@ -38,8 +56,9 @@ const verifyUser = (req, res, next) => {
   }
 };
 
-router.get("/", verifyUser, (req, res, next) => {
-  res.json({
+
+router.get("/verify", verifyUser, (req, res, next) => {
+ return res.json({
     Status: "Success",
     message: "Authorized",
     success: true,
@@ -278,7 +297,7 @@ router.get("/getProperties", (req, res) => {
   });
 });
 
-router.get("/getProperty/:id", (req, res) => {
+router.get("/getProperty/:id",verifyUser,(req, res) => {
   console.log("req.params: ", req.params);
   const propertyId = req.params.id;
   console.log("req.params: ", req.params);

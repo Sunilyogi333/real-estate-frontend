@@ -6,17 +6,44 @@ import Link from 'next/link'
 import React, { useEffect, useState } from 'react'
 import axios from 'axios'
 import Footer from '@/components/shared/footer'
+import { useRouter } from "next/navigation";
+axios.defaults.withCredentials = true;
+
 
 const page = ({ params }) => {
+
   console.log('params', params);
   const {id}  = params;
   console.log('id', id);
   const [propertyDetails, setPropertyDetails] = useState([]);
 
+  const router = useRouter();
+  
+  // useEffect(() => {
+  //   const verify = async () => {
+  //     try {
+  //       const response = await axios.get("http://localhost:9000/verify");
+  //       console.log('response', response);
+  //       if (response.data.success) {
+  //         console.log('user is logged in');
+  //       } else {
+  //         console.log('user is not logged in');
+  //         router.push('/login');
+  //       }
+  //     } catch (error) {
+  //       console.error("Error fetching properties:", error);
+  //     }
+  //   };
+
+  //   verify();
+  // }, []);
+
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await axios.get("http://localhost:9000/getProperty/" + id);
+        const response = await axios.get("http://localhost:9000/getProperty/" + id,{
+          withCredentials: true
+        })
         setPropertyDetails(response.data); // Array of properties
       } catch (error) {
         console.error("Error fetching properties:", error);

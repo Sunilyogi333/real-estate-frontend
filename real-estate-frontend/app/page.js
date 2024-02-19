@@ -2,6 +2,7 @@
 import Filter from '@/components/hero/Filter'
 import Header from '@/components/shared/header'
 import Item from '@/components/hero/Item'
+import { useRouter } from "next/navigation";
 // import Items from '@/components/ui/Items'
 import Search from '@/components/hero/Search'
 // import { useHistory } from 'react-router-dom';
@@ -16,7 +17,7 @@ const page = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await axios.get("http://localhost:9000/getProperties");
+        const response = await axios.get("http://localhost:9000/getProperties",{withCredentials: true});
         setProperties(response.data); // Array of properties
       } catch (error) {
         console.error("Error fetching properties:", error);

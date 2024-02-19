@@ -6,8 +6,8 @@ import Header from "@/components/shared/header";
 import { AuthContext } from "@/context/authContext";
 import { useContext } from "react";
 import Footer from "@/components/shared/footer";
-
 const page = () => {
+ 
   const userId = localStorage.getItem("serenity@userId");
   const [formData, setFormData] = useState({
     userId: userId,

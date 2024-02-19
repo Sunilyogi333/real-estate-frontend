@@ -5,6 +5,7 @@ import Icons from "../shared/icons";
 
 const Item = ({ properties }) => {
   // Set default values if properties are not provided
+  
   const {
     price = 4000,
     propertyName = 'Road Side',
