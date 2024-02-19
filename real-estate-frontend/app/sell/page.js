@@ -5,11 +5,43 @@ import Link from "next/link";
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 import Footer from "@/components/shared/footer";
+import { useRouter } from "next/navigation";
+axios.defaults.withCredentials = true;
 
 const page = () => {
   const [Myproperties, setMyProperties] = React.useState([]);
   const userId = localStorage.getItem("serenity@userId");
+  const [isLoggedIn, setIsLoggedIn] = useState(false); // Set to false initially
+
+  const router = useRouter();
+    
+      
+      useEffect(() => {
+        const verify = async () => {
+          try {
+            const response = await axios.get("http://localhost:9000/verify",{withCredentials: true});
+            console.log('response', response);
+            if (response.data.success) {
+              console.log('user is logged in');
+              setIsLoggedIn(true); // Set the state to true if logged in
+            } else {
+              console.log('user is not logged in');
+              setIsLoggedIn(false); // Set the state to false if not logged in
+              router.push('/login');
+            }
+          } catch (error) {
+            console.error("Error fetching properties:", error);
+          }
+        };
+    
+        verify();
+      }, []);
+    
+      
   useEffect(() => {
+    if (!userId) {
+      return;
+    }
     const fetchData = async () => {
       try {
         const response = await axios.get("http://localhost:9000/getMyProperties/"+userId);
@@ -19,7 +51,11 @@ const page = () => {
       }
     };
     fetchData();
-  }, []);
+  }, [userId]);
+
+  if (!isLoggedIn) {
+    return null;
+  }
   console.log("Myproperties: ", Myproperties);
   return (
     <>

@@ -1,4 +1,4 @@
-"use client";
+'use client'
 import About from '@/components/ui/About'
 import Header from '@/components/shared/header'
 import Images from '@/components/ui/Images'
@@ -16,34 +16,35 @@ const page = ({ params }) => {
   const {id}  = params;
   console.log('id', id);
   const [propertyDetails, setPropertyDetails] = useState([]);
+  const [isLoggedIn, setIsLoggedIn] = useState(false); // Set to false initially
 
   const router = useRouter();
   
-  // useEffect(() => {
-  //   const verify = async () => {
-  //     try {
-  //       const response = await axios.get("http://localhost:9000/verify");
-  //       console.log('response', response);
-  //       if (response.data.success) {
-  //         console.log('user is logged in');
-  //       } else {
-  //         console.log('user is not logged in');
-  //         router.push('/login');
-  //       }
-  //     } catch (error) {
-  //       console.error("Error fetching properties:", error);
-  //     }
-  //   };
+  useEffect(() => {
+    const verify = async () => {
+      try {
+        const response = await axios.get("http://localhost:9000/verify/",{withCredentials: true})
+        console.log('response', response);
+        if (response.data.success) {
+          console.log('user is logged in');
+          setIsLoggedIn(true); // Set the state to true if logged in
+        } else {
+          console.log('user is not logged in');
+          setIsLoggedIn(false); // Set the state to false if not logged in
+          router.push('/login');
+        }
+      } catch (error) {
+        console.error("Error fetching properties:", error);
+      }
+    };
 
-  //   verify();
-  // }, []);
+    verify();
+  }, []);
 
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await axios.get("http://localhost:9000/getProperty/" + id,{
-          withCredentials: true
-        })
+        const response = await axios.get("http://localhost:9000/getProperty/" + id);
         setPropertyDetails(response.data); // Array of properties
       } catch (error) {
         console.error("Error fetching properties:", error);
@@ -53,6 +54,9 @@ const page = ({ params }) => {
     fetchData();
   }, []);
 
+  if (!isLoggedIn) {
+    return null;
+  }
   console.log('des', propertyDetails);
 
   return (
@@ -68,4 +72,4 @@ const page = ({ params }) => {
   )
 }
 
-export default page
+export default page;

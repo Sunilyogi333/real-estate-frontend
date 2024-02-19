@@ -17,6 +17,7 @@ export const AuthContext = createContext({
 const AuthContextProvider = ({ children }) => {
   const [token, setToken] = useState(Cookies.get("token"));
   const [auth, setAuth] = useState(false);
+  // const [userId, setUserId] = useState(null);
 
   useEffect(() => {
     if (Cookies.get("token")) {

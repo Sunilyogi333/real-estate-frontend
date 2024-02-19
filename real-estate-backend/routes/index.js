@@ -24,30 +24,14 @@ router.use(express.json());
 router.use(cookieParser());
 
 
-// const verifyUser = (req, res) => {
-//   const token = req.cookies.token;
-//   if (!token) {
-//     return res.json({ Error: "Unauthorized", status:false });
-//   } else {
-//      jwt.verify(token, secretKey, (err, decoded) => {
-//       if (err) {
-//         return res.json({ Error: "Token is not valid", status: false});
-//       } else {
-//         req.userId = decoded.userId;
-//         next();
-//       }
-//     });
-//   }
-// };
-
-const verifyUser = (req, res, next) => {
+const verifyUser = (req, res, next) => { 
   const token = req.cookies.token;
   if (!token) {
-    res.redirect("http://localhost:3000/login");
+    return res.json({ Error: "Unauthorized", status:false });
   } else {
-    jwt.verify(token, secretKey, (err, decoded) => {
+     jwt.verify(token, secretKey, (err, decoded) => {
       if (err) {
-        res.redirect("http://localhost:3000/login");
+        return res.json({ Error: "Token is not valid", status: false});
       } else {
         req.userId = decoded.userId;
         next();
@@ -57,7 +41,8 @@ const verifyUser = (req, res, next) => {
 };
 
 
-router.get("/verify", verifyUser, (req, res, next) => {
+
+router.get("/verify", verifyUser, (req, res) => {
  return res.json({
     Status: "Success",
     message: "Authorized",
@@ -297,7 +282,7 @@ router.get("/getProperties", (req, res) => {
   });
 });
 
-router.get("/getProperty/:id",verifyUser,(req, res) => {
+router.get("/getProperty/:id",(req, res) => {
   console.log("req.params: ", req.params);
   const propertyId = req.params.id;
   console.log("req.params: ", req.params);

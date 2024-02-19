@@ -56,13 +56,13 @@ const account = () => {
           </Link>
           <Link
             href="#"
-            className="text-left block px-4 py-2 text-gray-800 hover:underline border-b-2 border-gray-200"
+            className="text-left block px-4 py-2 text-gray-800 hover:underline border-b-2 border-gray-200 z-50"
           >
             Support
           </Link>
           <Link
             href="/logout"
-            className="text-left block px-4 py-2 text-gray-800 hover:underline border border-transparent"
+            className="text-left block px-4 py-2 text-gray-800 hover:underline border border-transparent z-50"
           >
             Logout
           </Link>

@@ -8,11 +8,23 @@ import Search from '@/components/hero/Search'
 // import { useHistory } from 'react-router-dom';
 import React, { useEffect, useState } from "react";
 import axios from "axios";
-import AuthContext from "@/context/authContext";import Footer from '@/components/shared/footer'
+import AuthContext from "@/context/authContext";
+import Footer from '@/components/shared/footer'
+import { useFetcher } from 'react-router-dom';
+import Cookies from "js-cookie";
 
 
 const page = () => {
+  const router = useRouter();
   const [properties, setProperties] = useState([]);
+  // useEffect(() => {
+  //   // Check if token exists
+  //   const token = Cookies.get("token");
+  //   if (!token) {
+  //     // Redirect to login page
+  //     router.push('/login');
+  //   }
+  // }, []);
 
   useEffect(() => {
     const fetchData = async () => {

@@ -20,6 +20,9 @@ const Footer = () => {
             {/* Right Section - Contact Information (Width set to 30%) */}
             <div className="flex-shrink-0 w-1/5 sm:absolute right-0 sm:w-1/3 text-wrap">
               <p className="text-sm mb-2">Contact us:</p>
+              <p className="text-sm">Email: sunilnath0109@gmail.com</p>
+              <p className="text-sm">Phone: +977 9828569788</p>
+              <br></br>
               <p className="text-sm">Email: pragyagyawali000@gmail.com</p>
               <p className="text-sm">Phone: +977 (078) XXXXX </p>
             </div>
