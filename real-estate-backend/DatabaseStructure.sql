@@ -33,7 +33,7 @@ CREATE TABLE property (
     heating ENUM('forced-air', 'electric-space-heating', 'fireplace', 'unspecified'),
     laundry ENUM('available', 'not-available', 'unspecified'),
     description TEXT,
-    date DATE,
+    date DATE DEFAULT CURRENT_DATE,
     CONSTRAINT userId FOREIGN KEY(userId) REFERENCES users(userId)
 );
 /* propertyImages */
@@ -48,3 +48,33 @@ CREATE TABLE propertyImages (
 
 /* all data select */
 SELECT * FROM users LEFT JOIN property ON users.userId = property.userId INNER JOIN propertyImages ON property.propertyId = propertyImages.propertyId;
+ALTER TABLE `property` CHANGE `date` `date`
+
+-- admin
+CREATE TABLE admin(
+adminId int PRIMARY KEY AUTO_INCREMENT,
+adminName varchar (125),
+adminEmail varchar (125),
+adminPassword varchar(125)
+);
+
+INSERT INto admin(adminName,adminEmail,adminPassword)
+VALUES('Sunil Nath','sunilnath0109@gmail.com','Sunil@123')
+
+-- kyc verification
+CREATE TABLE kycForm ( 
+    id INT AUTO_INCREMENT PRIMARY KEY, 
+    uID INT, firstName VARCHAR(255), 
+    lastName VARCHAR(255), 
+    date_of_birth DATE, 
+    phoneNumber INT, 
+    provision VARCHAR(255), 
+    district VARCHAR(255), 
+    municipality VARCHAR(255), 
+    village VARCHAR(255), 
+    userPhoto varchar(225), 
+    CFPhoto varchar(255), 
+    CBPhoto varchar(255), 
+    verification ENUM('Pending', 'Verifed', 'Rejected') DEFAULT 'Pending', 
+    CONSTRAINT uID FOREIGN KEY(uID) REFERENCES users(userId)
+);

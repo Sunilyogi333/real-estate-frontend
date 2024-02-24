@@ -15,7 +15,28 @@ const page = ({ params }) => {
   console.log('params', params);
   const {id}  = params;
   console.log('id', id);
-  const [propertyDetails, setPropertyDetails] = useState([]);
+  const [propertyDetails, setPropertyDetails] = useState({
+    propertyName: "",
+    location: "",
+    propertyType: "commercial",
+    bedrooms: "",
+    bathrooms: "",
+    kitchen: "",
+    price: "",
+    yearBuilt: "",
+    size: "",
+    parking: "",
+    garden: "",
+    fireplace: "",
+    cooling: "",
+    heating: "",
+    laundry: "",
+    description: "",
+    date: "",
+    image1: null,
+    image2: null,
+    image3: null,
+  })
   const [isLoggedIn, setIsLoggedIn] = useState(false); // Set to false initially
 
   const router = useRouter();
@@ -45,7 +66,28 @@ const page = ({ params }) => {
     const fetchData = async () => {
       try {
         const response = await axios.get("http://localhost:9000/getProperty/" + id);
-        setPropertyDetails(response.data); // Array of properties
+        setPropertyDetails({
+          propertyName: response.data.propertyName,
+          location: response.data.location,
+          propertyType: response.data.propertyType,
+          bedrooms: response.data.bedrooms,
+          bathrooms: response.data.bathrooms,
+          kitchen: response.data.kitchen,
+          price: response.data.price,
+          yearBuilt: response.data.yearBuilt,
+          size: response.data.size,
+          parking: response.data.parking,
+          garden: response.data.garden,
+          fireplace: response.data.fireplace,
+          cooling: response.data.cooling,
+          heating: response.data.heating,
+          laundry: response.data.laundry,
+          description: response.data.description,
+          date: response.data.date.split('T')[0],
+          image1: response.data.image1,
+          image2: response.data.image2,
+          image3: response.data.image3,
+        })
       } catch (error) {
         console.error("Error fetching properties:", error);
       }

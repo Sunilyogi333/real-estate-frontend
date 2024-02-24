@@ -14,7 +14,6 @@ const page = () => {
   const [isLoggedIn, setIsLoggedIn] = useState(false); // Set to false initially
 
   const router = useRouter();
-    
       
       useEffect(() => {
         const verify = async () => {

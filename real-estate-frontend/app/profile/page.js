@@ -122,7 +122,7 @@ const Profile = () => {
     setEditProfileVisibility(!editProfileVisiblity)
   }
   return (<>
-    <Header></Header>
+    <Header user={updatedUser}></Header>
     <div className="flex justify-between px-6 pr-0">
       <ProfileDetails user={updatedUser} editButtonClickAction={handleEditToogle} visibility={editProfileVisiblity} onUpdate={(user) => setUpdatedUser(user)}> </ProfileDetails>
       <EditProfile visibility={editProfileVisiblity} user={updatedUser} onUpdate={(user) => setUpdatedUser(user)}></EditProfile>

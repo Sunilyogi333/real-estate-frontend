@@ -15,8 +15,8 @@ import Cookies from "js-cookie";
 
 
 const page = () => {
-  const router = useRouter();
   const [properties, setProperties] = useState([]);
+  // const router = useRouter();
   // useEffect(() => {
   //   // Check if token exists
   //   const token = Cookies.get("token");
@@ -44,15 +44,15 @@ const page = () => {
     <>
       <Header />
       <Search />
-      <div className="px-12 lg:mx-48 flex flex-col md:flex-col md:justify-between lg:px-0 lg:justify-between lg:flex-row">
-        <div className="flex lg:gap-10 flex-wrap mt-8 lg:w-3/4">
+      <div className="lg:mx-48 px-12 flex flex-col md:flex-col md:justify-between lg:px-0 lg:flex-row">
+        <div className="flex lg:gap-10 flex-wrap mt-8 lg:w-full">
           {properties.map((properties, index) => (
             <Item key={index} properties={properties} />
           ))}
         </div>
-        <div className="w-1/4 ">
-          {/* <Filter /> */}
-        </div>
+        {/* <div className="w-1/4 ">
+          <Filter />
+        </div> */}
       </div>
       <Footer />
     </>

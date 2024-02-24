@@ -6,7 +6,7 @@ import Account from "./account";
 import { useContext } from "react";
 import { AuthContext } from "@/context/authContext";
 
-const Navigation = () => {
+const Navigation = ({user}) => {
   const { auth } = useContext(AuthContext);
   const [isMenuOpen, setMenuOpen] = useState(false);
 
@@ -37,7 +37,7 @@ const Navigation = () => {
 
       {auth ? (
         <>
-        <Account />
+        <Account user={user}/>
         </>
       ) : (
         <>

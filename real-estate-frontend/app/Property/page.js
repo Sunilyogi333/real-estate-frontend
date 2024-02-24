@@ -11,7 +11,7 @@ axios.defaults.withCredentials = true;
 
 
 const page = () => {
- 
+
   const userId = localStorage.getItem("serenity@userId");
   const [formData, setFormData] = useState({
     userId: userId,
@@ -30,6 +30,7 @@ const page = () => {
     cooling: "",
     heating: "",
     laundry: "",
+    description: "",
     image1: null,
     image2: null,
     image3: null,
@@ -53,11 +54,11 @@ const page = () => {
 
   const [isLoggedIn, setIsLoggedIn] = useState(false); // Set to false initially
   const router = useRouter();
-      
+
   useEffect(() => {
     const verify = async () => {
       try {
-        const response = await axios.get("http://localhost:9000/verify",{withCredentials: true});
+        const response = await axios.get("http://localhost:9000/verify", { withCredentials: true });
         console.log('response', response);
         if (response.data.success) {
           console.log('user is logged in');
@@ -79,19 +80,28 @@ const page = () => {
     return null;
   }
 
-  const handleSubmit = () => {
+
+  const handleSubmit = async () => {
     const formDataToSend = new FormData();
     for (const key in formData) {
       formDataToSend.append(key, formData[key]);
     }
 
-    axios.post('http://localhost:9000/addProperty', formDataToSend)
-    .then((res) => {
-      console.log(res);
-    })
-    .catch((err) => {
-      console.log(err);
-    });
+    try {
+      const response = await axios.post(
+        "http://localhost:9000/addProperty",
+        formDataToSend
+      );
+      console.log(response);
+
+      // Check if the request was successful
+      if (response.data.success) {
+        // Navigate to the sell page
+        router.push("/sell");
+      }
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   return (
@@ -425,6 +435,22 @@ const page = () => {
                       <option value="not-available">Not Available</option>
                     </select>
                   </div>
+                </div>
+                <div className="mb-4 mt-6">
+                  <label
+                    htmlFor="description"
+                    className="block text-sm font-medium text-gray-700"
+                  >
+                    Description
+                  </label>
+                  <textarea
+                    id="description"
+                    name="description"
+                    value={formData.description}
+                    onChange={handleOtherInput}
+                    className="mt-1 p-2 w-full border rounded-md focus:outline-none focus:ring-1 focus:ring-blue-200 focus:border-transparent"
+                    rows={10}
+                  />
                 </div>
               </div>
 

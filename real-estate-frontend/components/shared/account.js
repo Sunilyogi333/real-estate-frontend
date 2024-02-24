@@ -5,7 +5,7 @@ import axios from "axios";
 import { AuthContext } from "@/context/authContext";
 import { useContext } from "react";
 
-const account = () => {
+const account = ({user ={}}) => {
     const userName = localStorage.getItem("serenity@username");
     const firstName = userName.split(" ")[0];
 
@@ -14,7 +14,9 @@ const account = () => {
     const toggleDropdown = () => {
       setDropdownVisible(!isDropdownVisible);
     };
-
+    // log the user object
+    console.log('user:', user);
+    const {profilePicture}= user;
   return (
     <>
       <div className="relative">
@@ -26,13 +28,19 @@ const account = () => {
             <Icons type={"line"}></Icons>
           </div>
           <div onClick={toggleDropdown} className="flex justify-center items-center gap-2 border border-blue-300 cursor-pointer text-white font-semibold text-base py-2 px-4 rounded-md">
-            <div className="w-[2vw] h-[2vw] bg-sky-100 rounded-full overflow-hidden">
-              <img
-                className="w-full h-full object-cover"
-                src="https://resizing.flixster.com/-XZAfHZM39UwaGJIFWKAE8fS0ak=/v3/t/assets/p9991602_p_v12_aj.jpg"
-                alt=""
-              />
-            </div>
+            {profilePicture ? (
+              <div className="w-[2vw] h-[2vw] bg-sky-100 rounded-full overflow-hidden">
+                <img
+                  className="w-full h-full object-cover"
+                  src={`http://localhost:9000/images/uploads/${profilePicture}`}
+                  alt=""
+                />
+              </div>
+            ) : (
+              <div className="w-[2vw] h-[2vw] bg-sky-100 rounded-full overflow-hidden">
+                <p className="font-semibold text-gray-800">{userName[0]}</p>
+              </div>
+            )}
             <div className="flex items-center justify-center">
               <p className="font-semibold text-gray-800">{firstName}</p>
               <Icons type={"down"}></Icons>

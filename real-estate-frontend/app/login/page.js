@@ -115,7 +115,7 @@ const page = () => {
             </form>
           <p className="mt-8 text-sm text-center text-gray-600">
             Don't have an account?{" "}
-            <Link href="/Signup" className="font-semibold text-blue-500 mr-1">
+            <Link href="/signup" className="font-semibold text-blue-500 mr-1">
               Signup
             </Link>
           </p>

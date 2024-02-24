@@ -1,8 +1,7 @@
 {
-  "/description/[id]/page": "app/description/[id]/page.js",
+  "/adminPage/page": "app/adminPage/page.js",
+  "/kycForm/page": "app/kycForm/page.js",
+  "/login/page": "app/login/page.js",
   "/profile/page": "app/profile/page.js",
-  "/Property/page": "app/Property/page.js",
-  "/aboutus/page": "app/aboutus/page.js",
-  "/page": "app/page.js",
-  "/favicon.ico/route": "app/favicon.ico/route.js"
+  "/admin/page": "app/admin/page.js"
 }

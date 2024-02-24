@@ -128,6 +128,43 @@ router.post("/login", function (req, res) {
   });
 });
 
+router.post("/adminLogin", function (req, res) {
+  const adminEmail = req.body.adminEmail;
+  const adminPassword = req.body.adminPassword;
+  console.log("req.body: ", req.body);
+  console.log("adminEmail: ", adminEmail);
+  console.log("adminPassword: ", adminPassword);
+  const sql = "SELECT * FROM admin WHERE adminEmail = ? AND adminPassword = ?";
+  con.query(sql, [adminEmail,adminPassword], (err, result) => {
+    if (err) return res.json({ Error: "Login error in server" });
+    if (result.length === 0) return res.json({ accountError: "Admin not found" });
+    res.json({
+      message: "Login success",
+      success: true,
+    }); 
+  });
+});
+
+router.get("/getAdmin/:id", (req, res) => {
+  const id = req.params.id;
+  console.log("req.params: ", req.params);
+  console.log("id: ", id);
+
+  const sql = `SELECT adminName FROM admin WHERE adminId = ?`;
+
+  con.query(sql, [id], (err, result) => {
+    if (err) {
+      console.error("Error fetching admin details:", err);
+      return res.status(500).json({ error: "Internal Server Error" });
+    }
+
+    if (result.length === 0) {
+      return res.status(404).json({ error: "Admin not found" });
+    }
+
+    res.json(result[0]); // Assuming you only expect one admin
+  });
+});
 
 router.get("/getUserProfile/:userId", (req, res) => {
   const userId = req.params.userId;
@@ -177,6 +214,109 @@ router.put("/updateProfile",upload.single('profilePicture'), (req, res) => {
       res.json({ message: "Profile updated successfully", success: true });
     }
   );
+});
+
+router.post(
+  "/kycForm",
+  upload.fields([
+    { name: "userPhoto", maxCount: 1 },
+    { name: "CFPhoto", maxCount: 1 },
+    { name: "CBPhoto", maxCount: 1 },
+  ]),
+(req, res) => {
+  const userPhoto = req.files["userPhoto"][0].filename;
+  const CFPhoto = req.files["CFPhoto"][0].filename;
+  const CBPhoto = req.files["CBPhoto"][0].filename;
+
+  var uID = req.body.uID;
+  var firstName = req.body.firstName;
+  var lastName = req.body.lastName;
+  var date_of_birth = req.body.date_of_birth;
+  var phoneNumber = req.body.phoneNumber;
+  var provision = req.body.provision;
+  var district = req.body.district;
+  var municipality = req.body.municipality;
+  var village = req.body.village;
+
+  var sql =
+    "INSERT INTO kycForm (uID, firstName, lastName, date_of_birth,  phoneNumber, provision, district, municipality, village, userPhoto, CFPhoto, CBPhoto) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+  var values = [uID, firstName, lastName, date_of_birth, phoneNumber, provision, district, municipality, village, userPhoto, CFPhoto, CBPhoto];
+console.log("values: ", values);
+  con.query(sql, values, function (err, result) {
+    if (err) {
+      return res.json({ Error: "Error inserting kycForm data" });
+    }
+    return res.json({ message: "kycForm successfully added", success: true });
+  });
+})
+
+router.get("/getkycForm", (req, res) => {
+  const sql = `SELECT * FROM kycForm where verification = 'Pending'`;
+
+  con.query(sql, (err, result) => {
+    if (err) {
+      console.error("Error fetching kycForm:", err);
+      return res.status(500).json({ error: "Internal Server Error" });
+    }
+
+    res.json(result);
+  });
+});
+
+router.get("/getkycForm/:id", (req, res) => {
+  console.log("req.params: ", req.params);
+  const id = req.params.id;
+  // console.log("req.params: ", req.params);
+  console.log("id: ", id);
+
+  const sql = `SELECT * FROM kycForm WHERE id = ?`;
+
+  con.query(sql, [id], (err, result) => {
+    if (err) {
+      console.error("Error fetching kycForm details:", err);
+      return res.status(500).json({ error: "Internal Server Error" });
+    }
+
+    if (result.length === 0) {
+      return res.status(404).json({ error: "kycForm not found" });
+    }
+
+    res.json(result[0]); // Assuming you only expect one kycForm
+  });
+});
+
+router.post("/verifyKycForm/:id", (req, res) => {
+  const id = req.params.id;
+  console.log("req.params: ", req.params);
+  console.log("id: ", id);
+
+  const sql = `UPDATE kycForm SET verification = 'Verified' WHERE id = ?`;
+
+  con.query(sql, [id], (err, result) => {
+    if (err) {
+      console.error("Error verifying kycForm:", err);
+      return res.status(500).json({ error: "Internal Server Error" });
+    }
+
+    res.json({ message: "kycForm verified successfully", success: true });
+  });
+});
+
+router.post("/rejectKycForm/:id", (req, res) => {
+  const id = req.params.id;
+  console.log("req.params: ", req.params);
+  console.log("id: ", id);
+
+  const sql = `UPDATE kycForm SET verification = 'Rejected' WHERE id = ?`;
+
+  con.query(sql, [id], (err, result) => {
+    if (err) {
+      console.error("Error rejecting kycForm:", err);
+      return res.status(500).json({ error: "Internal Server Error" });
+    }
+
+    res.json({ message: "kycForm rejected successfully", success: true });
+  });
 });
 
 router.post(
@@ -321,7 +461,8 @@ router.get("/getMyProperties/:userId", (req, res) => {
     ON users.userId = property.userId
     INNER JOIN propertyImages 
     ON property.propertyId = propertyImages.propertyId
-    WHERE property.userId = ?;
+    WHERE property.userId = ?
+    ORDER BY property.propertyId DESC;
   `;
 
   con.query(sql, [userId], (err, result) => {
@@ -382,7 +523,7 @@ router.delete("/deleteProperty/:propertyId", (req, res) => {
 
 // Add route to handle property update
 
-router.put("/updateProperty",upload.fields([
+router.post("/updateProperty",upload.fields([
   { name: "image1", maxCount: 1 },
   { name: "image2", maxCount: 1 },
   { name: "image3", maxCount: 1 },
