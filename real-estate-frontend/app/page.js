@@ -12,19 +12,11 @@ import AuthContext from "@/context/authContext";
 import Footer from '@/components/shared/footer'
 import { useFetcher } from 'react-router-dom';
 import Cookies from "js-cookie";
+import AboutHome from '@/components/ui/aboutHome';
 
 
 const page = () => {
   const [properties, setProperties] = useState([]);
-  // const router = useRouter();
-  // useEffect(() => {
-  //   // Check if token exists
-  //   const token = Cookies.get("token");
-  //   if (!token) {
-  //     // Redirect to login page
-  //     router.push('/login');
-  //   }
-  // }, []);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -43,17 +35,7 @@ const page = () => {
   return (
     <>
       <Header />
-      <Search />
-      <div className="lg:mx-48 px-12 flex flex-col md:flex-col md:justify-between lg:px-0 lg:flex-row">
-        <div className="flex lg:gap-10 flex-wrap mt-8 lg:w-full">
-          {properties.map((properties, index) => (
-            <Item key={index} properties={properties} />
-          ))}
-        </div>
-        {/* <div className="w-1/4 ">
-          <Filter />
-        </div> */}
-      </div>
+      <AboutHome properties={properties}/>
       <Footer />
     </>
   );

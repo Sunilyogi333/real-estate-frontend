@@ -16,7 +16,10 @@ const page = () => {
   const [formData, setFormData] = useState({
     userId: userId,
     propertyName: "",
-    location: "",
+    provision: '',
+    district: '',
+    municipality: '',
+    village: '',
     propertyType: "commercial",
     bedrooms: "",
     bathrooms: "",
@@ -117,7 +120,7 @@ const page = () => {
             <div className="lg:p-4 border border-blue-200 rounded-md">
               <div className="mb-8">
                 <h2 className="text-xl font-bold mb-4">Mandatory Details</h2>
-                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 gap-8">
                   {/* Property Name */}
                   <div className="mb-4">
                     <label
@@ -137,7 +140,7 @@ const page = () => {
                   </div>
 
                   {/* Location */}
-                  <div className="mb-4">
+                  {/* <div className="mb-4">
                     <label
                       htmlFor="location"
                       className="block text-sm font-medium text-gray-700"
@@ -152,7 +155,7 @@ const page = () => {
                       onChange={handleMandatoryInput}
                       className="mt-1 p-2 w-full border rounded-md focus:outline-none focus:ring-1 focus:ring-blue-200 focus:border-transparent"
                     />
-                  </div>
+                  </div> */}
 
                   {/* Property Type */}
                   <div className="mb-4">
@@ -172,6 +175,81 @@ const page = () => {
                       <option value="commercial">Commercial</option>
                       <option value="residential">Residential</option>
                     </select>
+                  </div>
+                </div>
+              </div>
+              {/* Location */}
+              <div className="mb-8">
+                <h2 className="text-xl font-bold mb-4">Location</h2>
+                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 gap-8">
+                  {/* Provision */}
+                  <div className="mb-4">
+                    <label
+                      htmlFor="provision"
+                      className="block text-sm font-medium text-gray-700"
+                    >
+                      Provision
+                    </label>
+                    <input
+                      type="text"
+                      id="provision"
+                      name="provision"
+                      value={formData.provision}
+                      onChange={handleMandatoryInput}
+                      className="mt-1 p-2 w-full border rounded-md focus:outline-none focus:ring-1 focus:ring-blue-200 focus:border-transparent"
+                    />
+                  </div>
+
+                  {/* District */}
+                  <div className="mb-4">
+                    <label
+                      htmlFor="district"
+                      className="block text-sm font-medium text-gray-700"
+                    >
+                      Dristrict
+                    </label>
+                    <input
+                      type="text"
+                      id="district"
+                      name="district"
+                      value={formData.district}
+                      onChange={handleMandatoryInput}
+                      className="mt-1 p-2 w-full border rounded-md focus:outline-none focus:ring-1 focus:ring-blue-200 focus:border-transparent"
+                    />
+                  </div>
+
+                  {/* Municipality */}
+                  <div className="mb-4">
+                    <label
+                      htmlFor="municipality"
+                      className="block text-sm font-medium text-gray-700"
+                    >
+                      Municipality
+                    </label>
+                    <input
+                      type="text"
+                      id="municipality"
+                      name="municipality"
+                      value={formData.municipality}
+                      onChange={handleMandatoryInput}
+                      className="mt-1 p-2 w-full border rounded-md focus:outline-none focus:ring-1 focus:ring-blue-200 focus:border-transparent"
+                    />
+                  </div>
+                  <div className="mb-4">
+                    <label
+                      htmlFor="village"
+                      className="block text-sm font-medium text-gray-700"
+                    >
+                      Village/Tole
+                    </label>
+                    <input
+                      type="text"
+                      id="village"
+                      name="village"
+                      value={formData.village}
+                      onChange={handleMandatoryInput}
+                      className="mt-1 p-2 w-full border rounded-md focus:outline-none focus:ring-1 focus:ring-blue-200 focus:border-transparent"
+                    />
                   </div>
                 </div>
               </div>

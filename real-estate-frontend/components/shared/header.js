@@ -43,7 +43,7 @@ const Header = () => {
         <div className="flex justify-between items-center w-full px-8 lg:px-24 py-3">
           <div className="flex gap-5 items-center">
             <Logo></Logo>
-            <Link className="cursor-pointer" href="/">
+            <Link className="cursor-pointer" href="/buy">
               Buy
             </Link>
             <Link className="cursor-pointer" href="/sell">

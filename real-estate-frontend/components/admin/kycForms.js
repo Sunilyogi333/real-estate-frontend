@@ -3,6 +3,7 @@ import axios from "axios";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useState, useEffect } from "react";
+import { Button } from "../shared/button";
 
 const kycForms = ({ formDetails, handleOptionClick, setFormId}) => {
     // const router = useRouter();
@@ -44,13 +45,14 @@ const kycForms = ({ formDetails, handleOptionClick, setFormId}) => {
                                 <td className="py-2 md:py-4 px-4 border-b">hello</td>
                                 <td className="py-4 md:py-4 px-4 border-b">
                                     <div className="flex flex-col lg:flex-row gap-4 overflow-hidden">
-                                        <Link href="/editProperty" as={`/editProperty/${formDetails.id}`}
+                                        <Button
                                             onClick={(event) => {
+                                                setFormId(form.id);
                                                 event.stopPropagation();
                                             }}
                                             className="bg-blue-500 text-white w-36 px-4 py-2 z-10 rounded text-center">
                                             View Details
-                                        </Link>
+                                        </Button>
                                     </div>
                                 </td>
                             </tr>

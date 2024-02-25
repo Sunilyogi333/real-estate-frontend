@@ -73,7 +73,7 @@ const about = ({propertyDetails}) => {
                   </div>
                   <div>
                     <p className="font-semibold">{propertyDetails.username}</p>
-                    <p className="text-sm">Balkumari, Lalitpur</p>
+                    <p className="text-sm">{propertyDetails.district}, {propertyDetails.village}</p>
                   </div>
                 </div>
                 <div>

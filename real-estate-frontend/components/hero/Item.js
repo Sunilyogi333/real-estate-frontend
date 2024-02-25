@@ -10,6 +10,10 @@ const Item = ({ properties }) => {
     price = 4000,
     propertyName = 'Road Side',
     location = 'Balkumari',
+    provison = 'Kathmandu',
+    district = 'Lalitpur',
+    municipality = 'Mahalaxmi',
+    village = 'Balkumari',
     bedrooms = 5,
     bathrooms = 4,
     size = 120,
@@ -38,9 +42,9 @@ const Item = ({ properties }) => {
 
           <div className="flex flex-col self-start md:w-full px-6 py-6">
             <div className="">
-              <p className="font-bold text-blue-400 text-xl">{price}</p>
+              <p className="font-bold text-blue-400 text-xl">NPR. {price}</p>
               <p className="text-xl font-bold py-2">{propertyName}</p>
-              <p className="text-sm text-gray-500">{location}</p>
+              <p className="text-sm text-gray-500">{district}, {village}</p>
               <hr className="my-4" />
             </div>
 

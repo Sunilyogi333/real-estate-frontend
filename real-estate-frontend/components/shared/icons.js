@@ -45,6 +45,10 @@ const Icons = ({ type }) => {
     url = "/images/icons/phone.png"
     ht = 24;
     wt = 24;
+  } else if (type == "property"){
+    url = "/images/icons/property.png";
+    ht = 30;
+    wt = 24;
   }
 
   return (

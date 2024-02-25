@@ -46,7 +46,9 @@ const ProfileDetails = ({user,visibility,editButtonClickAction})=>{
         <ul className="mt-4 space-y-4 pl-0">
         <li className="border-b border-green-500 pb-2 flex justify-between items-center pl-0">
           <span className="text-gray-400 text-sm">Date of Birth:</span>
-          <span>{date_of_birth.split('T')[0]}</span>
+          {/* if date of birth is given, display it else display 'not provided' */}
+          <span>{date_of_birth ? date_of_birth.split('T')[0] : '' }</span>
+          {/* <span>{date_of_birth.split('T')[0]}</span> */}
         </li>
         {/* <li className="border-b border-green-500 pb-2 flex justify-between items-center pl-0">
           <span className="text-gray-400 text-sm">Age:</span>
@@ -58,7 +60,7 @@ const ProfileDetails = ({user,visibility,editButtonClickAction})=>{
         </li>
         <li className="border-b border-green-500 pb-2 flex justify-between items-center pl-0">
           <span className="text-gray-400 text-sm">Phone Number:</span>
-          <span>{phoneNumber}</span>
+          <span>{phoneNumber ? phoneNumber : ''}</span>
         </li>
       </ul>
   </div>);

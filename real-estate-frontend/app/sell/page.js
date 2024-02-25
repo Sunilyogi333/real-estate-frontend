@@ -11,7 +11,9 @@ axios.defaults.withCredentials = true;
 const page = () => {
   const [Myproperties, setMyProperties] = React.useState([]);
   const userId = localStorage.getItem("serenity@userId");
+  const [totalProperties, setTotalProperties] = useState(0);
   const [isLoggedIn, setIsLoggedIn] = useState(false); // Set to false initially
+  const [isVerified, setIsVerified] = useState(false); // Set to false initially
 
   const router = useRouter();
       
@@ -22,7 +24,20 @@ const page = () => {
             console.log('response', response);
             if (response.data.success) {
               console.log('user is logged in');
-              setIsLoggedIn(true); // Set the state to true if logged in
+              setIsLoggedIn(true); 
+              try {
+                const res = await axios.get("http://localhost:9000/checkVerify/"+userId,{withCredentials: true});
+                console.log('verify response', res);
+                console.log('verify response.data.result', res.data.result);
+                if (res.data.message === "Verified") {
+                  console.log('user is verified');
+                  setIsVerified(true);
+                } else {
+                  router.push('/kycForm');
+                }
+              } catch (error) {
+                console.error("Error fetching properties:", error);
+              }// Set the state to true if logged in
             } else {
               console.log('user is not logged in');
               setIsLoggedIn(false); // Set the state to false if not logged in
@@ -35,8 +50,27 @@ const page = () => {
     
         verify();
       }, []);
-    
-      
+
+      useEffect(() => {
+        //verify seller
+        const verifySeller = async () => {
+          try {
+            const res = await axios.get("http://localhost:9000/checkVerify/"+userId,{withCredentials: true});
+            console.log('verify response', res);
+            if (res.data.message === "Verified") {
+              console.log('user is verified');
+            } else {
+             // Set the state to false if not logged in
+              router.push('/kycForm');
+            }
+          } catch (error) {
+            console.error("Error fetching properties:", error);
+          }
+        };
+
+        verifySeller();
+      }, []);
+
   useEffect(() => {
     if (!userId) {
       return;
@@ -45,6 +79,7 @@ const page = () => {
       try {
         const response = await axios.get("http://localhost:9000/getMyProperties/"+userId);
         setMyProperties(response.data); // Array of properties
+        setTotalProperties(response.data.length);
       } catch (error) {
         console.error("Error fetching properties:", error);
       }
@@ -53,6 +88,9 @@ const page = () => {
   }, [userId]);
 
   if (!isLoggedIn) {
+    return null;
+  }
+  if (!isVerified) {
     return null;
   }
   console.log("Myproperties: ", Myproperties);
@@ -68,7 +106,7 @@ const page = () => {
             </div>
             <div>
               <p>Total Properties</p>
-              <p className="font-semibold">12</p>
+              <p className="font-semibold">{totalProperties}</p>
             </div>
           </div>
           <div className="flex mt-4 md:mt-0">
@@ -81,7 +119,7 @@ const page = () => {
           </div>
         </div>
         <div>
-          <Properties Myproperties={Myproperties}/>
+          <Properties Myproperties={Myproperties} setTotalProperties={setTotalProperties} totalProperties={totalProperties}/>
         </div>
       </div>
       <Footer />

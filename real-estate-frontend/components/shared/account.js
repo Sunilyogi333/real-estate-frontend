@@ -27,7 +27,7 @@ const account = ({user ={}}) => {
           <div className="h-11 flex justify-center items-center overflow-hidden">
             <Icons type={"line"}></Icons>
           </div>
-          <div onClick={toggleDropdown} className="flex justify-center items-center gap-2 border border-blue-300 cursor-pointer text-white font-semibold text-base py-2 px-4 rounded-md">
+          <div onClick={toggleDropdown} className="z-50 flex justify-center items-center gap-2 border border-blue-300 cursor-pointer text-white font-semibold text-base py-2 px-4 rounded-md">
             {profilePicture ? (
               <div className="w-[2vw] h-[2vw] bg-sky-100 rounded-full overflow-hidden">
                 <img
@@ -37,8 +37,8 @@ const account = ({user ={}}) => {
                 />
               </div>
             ) : (
-              <div className="w-[2vw] h-[2vw] bg-sky-100 rounded-full overflow-hidden">
-                <p className="font-semibold text-gray-800">{userName[0]}</p>
+              <div className="w-[2vw] h-[2vw] bg-sky-100 rounded-full overflow-hidden flex items-center justify-center">
+                <p className="font-semibold text-gray-800 text-center">{userName[0]}</p>
               </div>
             )}
             <div className="flex items-center justify-center">
@@ -49,7 +49,7 @@ const account = ({user ={}}) => {
         </div>
         {/* <div className="fixed bg-green-500 top-0 left-0 right-0 bottom-0"></div> */}
         {isDropdownVisible && (
-        <div className="showme absolute right-0 border border-gray-200 mt-2 py-2 w-[180px] bg-sky-50 rounded-lg shadow-[0_2px_2px_rgb(0,0,0,0.2)]">
+        <div className="z-50 showme absolute right-0 border border-gray-200 mt-2 py-2 w-[180px] bg-sky-50 text-white rounded-lg shadow-[0_2px_2px_rgb(0,0,0,0.2)]">
           <Link
             href="/profile"
             className="text-left block px-4 py-2 text-gray-800 hover:underline border-b-2 border-gray-200"

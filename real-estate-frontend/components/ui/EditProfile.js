@@ -46,7 +46,10 @@ const EditProfile = ({ user, onSave, visibility, onUpdate }) => {
     formData.append('userId', editedUser.userId);
     formData.append('username', editedUser.username);
     formData.append('numberOfListings', editedUser.numberOfListings);
-    formData.append('date_of_birth', editedUser.date_of_birth.split('T')[0]);
+    // append date of birth if edited else append previous date of birth from user and if null append empty string
+    formData.append('date_of_birth', editedUser.date_of_birth ? editedUser.date_of_birth.split('T')[0] : user.date_of_birth );
+    // formData.append('date_of_birth', editedUser.date_of_birth.split('T')[0]);
+    // formData.append('phoneNumber', editedUser.phoneNumber);
     formData.append('phoneNumber', editedUser.phoneNumber);
 
     try {

@@ -74,7 +74,6 @@ const page = () => {
                 formDataToSend
             );
             console.log(response);
-
             // Check if the request was successful
             if (response.data.success) {
                 // Navigate to the sell page

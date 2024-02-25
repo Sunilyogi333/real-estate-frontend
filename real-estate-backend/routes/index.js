@@ -6,6 +6,8 @@ const upload = require("./multer");
 const bcrypt = require("bcrypt");
 const cookieParser = require("cookie-parser");
 const jwt = require("jsonwebtoken");
+const e = require("express");
+const { parse } = require("uuid");
 const secretKey = "secretKey";
 const salt = 10;
 
@@ -190,13 +192,10 @@ router.put("/updateProfile",upload.single('profilePicture'), (req, res) => {
   console.log("req.body: ", req.body); 
   console.log("req.file: ", req.file);
   const userId = req.body.userId;
-  const profilePicture = req.file.filename;
+  const profilePicture = req.file ? req.file.filename : req.body.profilePicture;
   const username = req.body.username;
-  const numberOfListings = req.body.numberOfListings;
   const date_of_birth = req.body.date_of_birth;
-  // const age = req.body.age;
-  // const email = req.body.email;
-  const phoneNumber = req.body.phoneNumber;
+  const phoneNumber = req.body.phoneNumber ? req.body.phoneNumber : null;
 
   console.log('phpneNumber: ', phoneNumber);
 
@@ -208,7 +207,7 @@ router.put("/updateProfile",upload.single('profilePicture'), (req, res) => {
     (err, result) => {
       if (err) {
         console.error("Error updating user profile:", err);
-        return res.status(500).json({ error: "Internal Server Error" });
+        return res.json({ error: "Internal Server Error" });
       }
 
       res.json({ message: "Profile updated successfully", success: true });
@@ -297,10 +296,68 @@ router.post("/verifyKycForm/:id", (req, res) => {
       console.error("Error verifying kycForm:", err);
       return res.status(500).json({ error: "Internal Server Error" });
     }
+    //now if sql is success then we have to update the user table and set the profilePicture, phoneNumber, date_of_birth if they are null so first check the user table and then update the user table 
+    const sql = `SELECT * FROM kycForm WHERE id = ?`;
+    con.query(sql, [id], (err, result) => {
+      if (err) {
+        console.error("Error fetching kycForm details:", err);
+        return res.json({ error: "Internal Server Error" });
+      }
 
+      if (result.length === 0) {
+        return res.json({ error: "kycForm not found" });
+      }
+      const userId = result[0].uID;
+      const sqlUser = `SELECT * FROM users WHERE userId = ?`;
+
+      con.query(sqlUser, [userId], (err, resultUser) => {
+        if (err) {
+          console.error("Error fetching user details:", err);
+          return res.json({ error: "Internal Server Error" });
+        }
+
+        if (resultUser.length === 0) {
+          return res.status(404).json({ error: "User not found" });
+        }
+        const profilePicture = resultUser[0].profilePicture;
+        const phoneNumber = resultUser[0].phoneNumber;
+        const date_of_birth = resultUser[0].date_of_birth;
+        if(profilePicture === null){
+          const sqlUpdatePicture = `UPDATE users SET profilePicture = ? WHERE userId = ?`;
+
+          con.query(sqlUpdatePicture, [result[0].userPhoto, userId], (err, resultPicture) => {
+            if (err) {
+              console.error("Error updating profilePicture:", err);
+              return res.status(500).json({ error: "Internal Server Error" });
+            }
+          });
+        }
+        if(phoneNumber === null){
+          const sqlUpdatePhoneNumber = `UPDATE users SET phoneNumber = ? WHERE userId = ?`;
+
+          con.query(sqlUpdatePhoneNumber, [result[0].phoneNumber, userId], (err, resultPhoneNumber) => {
+            if (err) {
+              console.error("Error updating phoneNumber:", err);
+              return res.status(500).json({ error: "Internal Server Error" });
+            }
+          });
+        }
+        if(date_of_birth === null){
+          const sqlUpdateDateOfBirth = `UPDATE users SET date_of_birth = ? WHERE userId = ?`;
+
+          con.query(sqlUpdateDateOfBirth, [result[0].date_of_birth, userId], (err, resultDateOfBirth) => {
+            if (err) {
+              console.error("Error updating date_of_birth:", err);
+              return res.status(500).json({ error: "Internal Server Error" });
+            }
+          });
+        }
+      });
+    });
     res.json({ message: "kycForm verified successfully", success: true });
   });
 });
+
 
 router.post("/rejectKycForm/:id", (req, res) => {
   const id = req.params.id;
@@ -319,6 +376,27 @@ router.post("/rejectKycForm/:id", (req, res) => {
   });
 });
 
+router.get("/checkVerify/:userId", (req, res) => {
+  const userId = req.params.userId;
+  console.log("req.params: ", userId);
+
+  const sql = `SELECT verification FROM kycForm WHERE uID = ?`;
+
+  con.query(sql, [userId], (err, result) => {
+    if (err) {
+      console.error("Error fetching kycForm:", err);
+      return res.status(500).json({ error: "Internal Server Error" });
+    }
+
+    if (result.length === 0) {
+      return res.json({ error: "User not found" });
+    }
+const message = result[0].verification;
+    res.json({message});
+  });
+
+});
+
 router.post(
   "/addProperty",
   upload.fields([
@@ -333,8 +411,11 @@ router.post(
 
     var userId = req.body.userId;
     var propertyName = req.body.propertyName;
-    var location = req.body.location;
-    var propertyType = req.body.propertyType;
+    var provision = req.body.provision;
+    var district = req.body.district;
+    var municipality = req.body.municipality;
+    var village = req.body.village;   
+     var propertyType = req.body.propertyType;
     var bedrooms = req.body.bedrooms;
     var bathrooms = req.body.bathrooms;
     var kitchen = req.body.kitchen;
@@ -356,8 +437,8 @@ router.post(
       }
 
       var propertySql =
-        "INSERT INTO property(userId, propertyName, location, propertyType, bedrooms, bathrooms, kitchen, price, yearBuilt, size, parking, garden, fireplace, cooling, heating, laundry, description) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
-      var propertyValues = [userId,propertyName,location,propertyType,bedrooms,bathrooms,kitchen,price,yearBuilt,size,parking,garden,fireplace,cooling,heating,laundry,description];
+        "INSERT INTO property(userId, propertyName, provision, district, municipality, village, propertyType, bedrooms, bathrooms, kitchen, price, yearBuilt, size, parking, garden, fireplace, cooling, heating, laundry, description) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+      var propertyValues = [userId, propertyName, provision, district, municipality, village, propertyType, bedrooms, bathrooms, kitchen,price,yearBuilt,size,parking,garden,fireplace,cooling,heating,laundry,description];
 
       con.query(
         propertySql,propertyValues,function (err, propertyResult) {
@@ -523,66 +604,176 @@ router.delete("/deleteProperty/:propertyId", (req, res) => {
 
 // Add route to handle property update
 
-router.post("/updateProperty",upload.fields([
-  { name: "image1", maxCount: 1 },
-  { name: "image2", maxCount: 1 },
-  { name: "image3", maxCount: 1 },
-]), (req, res) => {
-  console.log("req.body: ", req.body); 
-  console.log("req.file: ", req.file);
-  const propertyId = req.body.propertyId;
-  const image1 = req.files["image1"][0].filename;
-  const image2 = req.files["image2"][0].filename;
-  const image3 = req.files["image3"][0].filename;
-  const propertyName = req.body.propertyName;
-  const location = req.body.location;
-  const propertyType = req.body.propertyType;
-  const bedrooms = req.body.bedrooms;
-  const bathrooms = req.body.bathrooms;
-  const kitchen = req.body.kitchen;
-  const price = req.body.price;
-  const yearBuilt = req.body.yearBuilt;
-  const size = req.body.size;
-  const parking = req.body.parking;
-  const garden = req.body.garden;
-  const fireplace = req.body.fireplace;
-  const cooling = req.body.cooling;
-  const heating = req.body.heating;
-  const laundry = req.body.laundry;
-  const date = req.body.date;
-  const description = req.body.description;
+// router.post("/updateProperty",upload.fields([
+//   { name: "image1", maxCount: 1 },
+//   { name: "image2", maxCount: 1 },
+//   { name: "image3", maxCount: 1 },
+// ]), (req, res) => {
+//   console.log("req.body: ", req.body); 
+//   console.log("req.file: ", req.file);
+//   const propertyId = req.body.propertyId;
+//   const image1 = req.files["image1"][0].filename;
+//   const image2 = req.files["image2"][0].filename;
+//   const image3 = req.files["image3"][0].filename;
+//   const propertyName = req.body.propertyName;
+//   const location = req.body.location;
+//   const propertyType = req.body.propertyType;
+//   const bedrooms = req.body.bedrooms;
+//   const bathrooms = req.body.bathrooms;
+//   const kitchen = req.body.kitchen;
+//   const price = req.body.price;
+//   const yearBuilt = req.body.yearBuilt;
+//   const size = req.body.size;
+//   const parking = req.body.parking;
+//   const garden = req.body.garden;
+//   const fireplace = req.body.fireplace;
+//   const cooling = req.body.cooling;
+//   const heating = req.body.heating;
+//   const laundry = req.body.laundry;
+//   const date = req.body.date;
+//   const description = req.body.description;
 
-  console.log('propertyId: ', propertyId);
+//   console.log('propertyId: ', propertyId);
 
-  const sql = `UPDATE property SET propertyName = ?, location = ?, propertyType = ?, bedrooms = ?, bathrooms = ?, kitchen = ?, price = ?, yearBuilt = ?, size = ?, parking = ?, garden = ?, fireplace = ?, cooling = ?, heating = ?, laundry = ?, description = ? WHERE propertyId = ?`;
+//   const sql = `UPDATE property SET propertyName = ?, location = ?, propertyType = ?, bedrooms = ?, bathrooms = ?, kitchen = ?, price = ?, yearBuilt = ?, size = ?, parking = ?, garden = ?, fireplace = ?, cooling = ?, heating = ?, laundry = ?, description = ? WHERE propertyId = ?`;
 
-  con.query(
-    sql,
-    [propertyName, location, propertyType, bedrooms, bathrooms, kitchen, price, yearBuilt, size, parking, garden, fireplace, cooling, heating, laundry, description, propertyId],
-    (err, result) => {
+//   con.query(
+//     sql,
+//     [propertyName, location, propertyType, bedrooms, bathrooms, kitchen, price, yearBuilt, size, parking, garden, fireplace, cooling, heating, laundry, description, propertyId],
+//     (err, result) => {
+//       if (err) {
+//         console.error("Error updating property:", err);
+//         return res.status(500).json({ error: "Internal Server Error" });
+//       }
+
+//       const imagesSql = `UPDATE propertyImages SET image1 = ?, image2 = ?, image3 = ? WHERE propertyId = ?`;
+
+//       con.query(
+//         imagesSql,
+//         [image1, image2, image3, propertyId],
+//         (err, result) => {
+//           if (err) {
+//             console.error("Error updating property images:", err);
+//             return res.status(500).json({ error: "Internal Server Error" });
+//           }
+
+//           res.json({ message: "Property updated successfully", success: true });
+//         }
+//       );
+//     }
+//   );
+// }
+// );
+router.post(
+  "/updateProperty",
+  upload.fields([
+    { name: "image1", maxCount: 1 },
+    { name: "image2", maxCount: 1 },
+    { name: "image3", maxCount: 1 },
+  ]),
+  (req, res) => {
+    const {
+      propertyId,
+      propertyName,
+      provision,
+      district,
+      municipality,
+      village,
+      propertyType,
+      bedrooms,
+      bathrooms,
+      kitchen,
+      price,
+      yearBuilt,
+      size,
+      parking,
+      garden,
+      fireplace,
+      cooling,
+      heating,
+      laundry,
+      date,
+      description,
+      existingImage1,
+      existingImage2,
+      existingImage3,
+    } = req.body;
+
+    const image1 = req.files["image1"] ? req.files["image1"][0].filename : existingImage1;
+    const image2 = req.files["image2"] ? req.files["image2"][0].filename : existingImage2;
+    const image3 = req.files["image3"] ? req.files["image3"][0].filename : existingImage3;
+
+    const sql = `UPDATE property SET propertyName = ?, provision = ?, district = ?, municipality = ?, village = ?, propertyType = ?, bedrooms = ?, bathrooms = ?, kitchen = ?, price = ?, yearBuilt = ?, size = ?, parking = ?, garden = ?, fireplace = ?, cooling = ?, heating = ?, laundry = ?, description = ? WHERE propertyId = ?`;
+
+    con.beginTransaction((err) => {
       if (err) {
-        console.error("Error updating property:", err);
+        console.error("Error starting transaction:", err);
         return res.status(500).json({ error: "Internal Server Error" });
       }
 
-      const imagesSql = `UPDATE propertyImages SET image1 = ?, image2 = ?, image3 = ? WHERE propertyId = ?`;
-
       con.query(
-        imagesSql,
-        [image1, image2, image3, propertyId],
+        sql,
+        [
+          propertyName,
+          provision,
+          district,
+          municipality,
+          village,
+          propertyType,
+          bedrooms,
+          bathrooms,
+          kitchen,
+          price,
+          yearBuilt,
+          size,
+          parking,
+          garden,
+          fireplace,
+          cooling,
+          heating,
+          laundry,
+          description,
+          propertyId,
+        ],
         (err, result) => {
           if (err) {
-            console.error("Error updating property images:", err);
-            return res.status(500).json({ error: "Internal Server Error" });
+            console.error("Error updating property:", err);
+            con.rollback(() => {
+              res.status(500).json({ error: "Internal Server Error" });
+            });
+            return;
           }
 
-          res.json({ message: "Property updated successfully", success: true });
+          const imagesSql = `UPDATE propertyImages SET image1 = ?, image2 = ?, image3 = ? WHERE propertyId = ?`;
+
+          con.query(
+            imagesSql,
+            [image1, image2, image3, propertyId],
+            (err, result) => {
+              if (err) {
+                console.error("Error updating property images:", err);
+                con.rollback(() => {
+                  res.status(500).json({ error: "Internal Server Error" });
+                });
+                return;
+              }
+
+              con.commit((err) => {
+                if (err) {
+                  console.error("Error committing transaction:", err);
+                  con.rollback(() => {
+                    res.status(500).json({ error: "Internal Server Error" });
+                  });
+                  return;
+                }
+
+                res.json({ message: "Property updated successfully", success: true });
+              });
+            }
+          );
         }
       );
-    }
-  );
-}
+    });
+  }
 );
-
-
 module.exports = router;

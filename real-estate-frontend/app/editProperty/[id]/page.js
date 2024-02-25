@@ -17,7 +17,10 @@ const page = ({ params }) => {
         propertyId: id,
         userId: userId,
         propertyName: "",
-        location: "",
+        provision: '',
+        district: '',
+        municipality: '',
+        village: '',
         propertyType: "commercial",
         bedrooms: "",
         bathrooms: "",
@@ -35,6 +38,9 @@ const page = ({ params }) => {
         image1: null,
         image2: null,
         image3: null,
+        existingImage1: "",
+        existingImage2: "",
+        existingImage3: "",
     });
 
     const handleMandatoryInput = (e) => {
@@ -81,7 +87,35 @@ const page = ({ params }) => {
         const fetchData = async () => {
             try {
                 const response = await axios.get("http://localhost:9000/getProperty/" + id);
-                setFormData(response.data)
+                // console.log('response', response);
+                // setFormData(response.data)
+                setFormData(() => {
+                    return {
+                        ...formData,
+                        propertyName: response.data.propertyName,
+                        provision: response.data.provision,
+                        district: response.data.district,
+                        municipality: response.data.municipality,
+                        village: response.data.village,
+                        propertyType: response.data.propertyType,
+                        bedrooms: response.data.bedrooms,
+                        bathrooms: response.data.bathrooms,
+                        kitchen: response.data.kitchen,
+                        price: response.data.price,
+                        yearBuilt: response.data.yearBuilt,
+                        size: response.data.size,
+                        parking: response.data.parking,
+                        garden: response.data.garden,
+                        fireplace: response.data.fireplace,
+                        cooling: response.data.cooling,
+                        heating: response.data.heating,
+                        laundry: response.data.laundry,
+                        description: response.data.description,
+                        existingImage1: response.data.image1,
+                        existingImage2: response.data.image2,
+                        existingImage3: response.data.image3,
+                    }
+                })
             } catch (error) {
                 console.error("Error fetching properties:", error);
             }
@@ -94,10 +128,37 @@ const page = ({ params }) => {
     //     return null;
     //   }
 
-console.log('propertyna:',formData)
+    console.log('propertyexisting:', formData)
+    // const handleSubmit = async () => {
+    //     const formDataToSend = new FormData();
+    //     for (const key in formData) {
+    //         formDataToSend.append(key, formData[key]);
+    //     }
+
+    //     try {
+    //         const response = await axios.post(
+    //             "http://localhost:9000/updateProperty",
+    //             formDataToSend
+    //         );
+    //         console.log(response);
+
+    //         if (response.data.success) {
+    //             router.push("/sell");
+    //         }
+    //     } catch (error) {
+    //         console.log(error);
+    //     }
+    // };
     const handleSubmit = async () => {
         const formDataToSend = new FormData();
         for (const key in formData) {
+            // Skip null image properties
+            if (key === "image1" || key === "image2" || key === "image3") {
+                if (formData[key] === null) {
+                    continue;
+                }
+            }
+
             formDataToSend.append(key, formData[key]);
         }
 
@@ -131,7 +192,7 @@ console.log('propertyna:',formData)
                         <div className="lg:p-4 border border-blue-200 rounded-md">
                             <div className="mb-8">
                                 <h2 className="text-xl font-bold mb-4">Mandatory Details</h2>
-                                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 gap-8">
                                     {/* Property Name */}
                                     <div className="mb-4">
                                         <label
@@ -145,24 +206,6 @@ console.log('propertyna:',formData)
                                             id="property-name"
                                             name="propertyName"
                                             value={formData.propertyName}
-                                            onChange={handleMandatoryInput}
-                                            className="mt-1 p-2 w-full border rounded-md focus:outline-none focus:ring-1 focus:ring-blue-200 focus:border-transparent"
-                                        />
-                                    </div>
-
-                                    {/* Location */}
-                                    <div className="mb-4">
-                                        <label
-                                            htmlFor="location"
-                                            className="block text-sm font-medium text-gray-700"
-                                        >
-                                            Location
-                                        </label>
-                                        <input
-                                            type="text"
-                                            id="location"
-                                            name="location"
-                                            value={formData.location}
                                             onChange={handleMandatoryInput}
                                             className="mt-1 p-2 w-full border rounded-md focus:outline-none focus:ring-1 focus:ring-blue-200 focus:border-transparent"
                                         />
@@ -189,7 +232,81 @@ console.log('propertyna:',formData)
                                     </div>
                                 </div>
                             </div>
+                            {/* Location */}
+                            <div className="mb-8">
+                                <h2 className="text-xl font-bold mb-4">Location</h2>
+                                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 gap-8">
+                                    {/* Provision */}
+                                    <div className="mb-4">
+                                        <label
+                                            htmlFor="provision"
+                                            className="block text-sm font-medium text-gray-700"
+                                        >
+                                            Provision
+                                        </label>
+                                        <input
+                                            type="text"
+                                            id="provision"
+                                            name="provision"
+                                            value={formData.provision}
+                                            onChange={handleMandatoryInput}
+                                            className="mt-1 p-2 w-full border rounded-md focus:outline-none focus:ring-1 focus:ring-blue-200 focus:border-transparent"
+                                        />
+                                    </div>
 
+                                    {/* District */}
+                                    <div className="mb-4">
+                                        <label
+                                            htmlFor="district"
+                                            className="block text-sm font-medium text-gray-700"
+                                        >
+                                            Dristrict
+                                        </label>
+                                        <input
+                                            type="text"
+                                            id="district"
+                                            name="district"
+                                            value={formData.district}
+                                            onChange={handleMandatoryInput}
+                                            className="mt-1 p-2 w-full border rounded-md focus:outline-none focus:ring-1 focus:ring-blue-200 focus:border-transparent"
+                                        />
+                                    </div>
+
+                                    {/* Municipality */}
+                                    <div className="mb-4">
+                                        <label
+                                            htmlFor="municipality"
+                                            className="block text-sm font-medium text-gray-700"
+                                        >
+                                            Municipality
+                                        </label>
+                                        <input
+                                            type="text"
+                                            id="municipality"
+                                            name="municipality"
+                                            value={formData.municipality}
+                                            onChange={handleMandatoryInput}
+                                            className="mt-1 p-2 w-full border rounded-md focus:outline-none focus:ring-1 focus:ring-blue-200 focus:border-transparent"
+                                        />
+                                    </div>
+                                    <div className="mb-4">
+                                        <label
+                                            htmlFor="village"
+                                            className="block text-sm font-medium text-gray-700"
+                                        >
+                                            Village/Tole
+                                        </label>
+                                        <input
+                                            type="text"
+                                            id="village"
+                                            name="village"
+                                            value={formData.village}
+                                            onChange={handleMandatoryInput}
+                                            className="mt-1 p-2 w-full border rounded-md focus:outline-none focus:ring-1 focus:ring-blue-200 focus:border-transparent"
+                                        />
+                                    </div>
+                                </div>
+                            </div>
                             {/* Image Uploads */}
                             <div className="mb-8">
                                 <h2 className="text-xl font-bold mb-4">Image Uploads</h2>
