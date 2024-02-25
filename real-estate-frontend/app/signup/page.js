@@ -23,13 +23,17 @@ function page() {
 
   const handleInput = (event) => {
     setFormData({ ...formData, [event.target.name]: event.target.value });
+    const error = Validation(formData);
+    setError(error);
   };
 
   async function handleSubmit(event) {
     event.preventDefault();
     const error = Validation(formData);
     setError(error);
-
+    if (Object.keys(error).length > 0) {
+      return;
+    }
     const res = await axios.post("http://localhost:9000/signup", formData);
     if (res.data.success) {
       console.log(res);

@@ -7,6 +7,7 @@ import { useContext } from "react";
 import Footer from "@/components/shared/footer";
 import { useRouter } from "next/navigation";
 import { useEffect } from "react";
+import Validation from "./propertyValidation";
 axios.defaults.withCredentials = true;
 
 
@@ -39,12 +40,16 @@ const page = () => {
     image3: null,
   });
 
+  const [error, setError] = useState({});
+
   const handleMandatoryInput = (e) => {
     const { name, value, type } = e.target;
     setFormData((prevState) => ({
       ...prevState,
       [name]: type === "file" ? e.target.files[0] : value,
     }));
+    const error = Validation(formData);
+    setError(error);
   };
 
   const handleOtherInput = (e) => {
@@ -53,6 +58,8 @@ const page = () => {
       ...prevState,
       [name]: value,
     }));
+    const error = Validation(formData);
+    setError(error);
   };
 
   const [isLoggedIn, setIsLoggedIn] = useState(false); // Set to false initially
@@ -85,11 +92,15 @@ const page = () => {
 
 
   const handleSubmit = async () => {
+    const error = Validation(formData);
+    setError(error);
+    if (Object.keys(error).length > 0) {
+      return;
+    }
     const formDataToSend = new FormData();
     for (const key in formData) {
       formDataToSend.append(key, formData[key]);
     }
-
     try {
       const response = await axios.post(
         "http://localhost:9000/addProperty",
@@ -137,6 +148,9 @@ const page = () => {
                       onChange={handleMandatoryInput}
                       className="mt-1 p-2 w-full border rounded-md focus:outline-none focus:ring-1 focus:ring-blue-200 focus:border-transparent"
                     />
+                    {error.propertyName && (
+                      <p className="text-red-500">{error.propertyName}</p>
+                    )}
                   </div>
 
                   {/* Location */}
@@ -175,6 +189,10 @@ const page = () => {
                       <option value="commercial">Commercial</option>
                       <option value="residential">Residential</option>
                     </select>
+                    {error.propertyType && (
+                      <p className="text-red-500">{error.propertyType}</p>
+                    )
+                    }
                   </div>
                 </div>
               </div>
@@ -198,6 +216,9 @@ const page = () => {
                       onChange={handleMandatoryInput}
                       className="mt-1 p-2 w-full border rounded-md focus:outline-none focus:ring-1 focus:ring-blue-200 focus:border-transparent"
                     />
+                    {error.provision && (
+                      <p className="text-red-500">{error.provision}</p>
+                    )}
                   </div>
 
                   {/* District */}
@@ -216,6 +237,9 @@ const page = () => {
                       onChange={handleMandatoryInput}
                       className="mt-1 p-2 w-full border rounded-md focus:outline-none focus:ring-1 focus:ring-blue-200 focus:border-transparent"
                     />
+                    {error.district && (
+                      <p className="text-red-500">{error.district}</p>
+                    )}
                   </div>
 
                   {/* Municipality */}
@@ -234,6 +258,9 @@ const page = () => {
                       onChange={handleMandatoryInput}
                       className="mt-1 p-2 w-full border rounded-md focus:outline-none focus:ring-1 focus:ring-blue-200 focus:border-transparent"
                     />
+                    {error.municipality && (
+                      <p className="text-red-500">{error.municipality}</p>
+                    )}
                   </div>
                   <div className="mb-4">
                     <label
@@ -250,6 +277,9 @@ const page = () => {
                       onChange={handleMandatoryInput}
                       className="mt-1 p-2 w-full border rounded-md focus:outline-none focus:ring-1 focus:ring-blue-200 focus:border-transparent"
                     />
+                    {error.village && (
+                      <p className="text-red-500">{error.village}</p>
+                    )}
                   </div>
                 </div>
               </div>
@@ -257,27 +287,46 @@ const page = () => {
               {/* Image Uploads */}
               <div className="mb-8">
                 <h2 className="text-xl font-bold mb-4">Image Uploads</h2>
-                <input
-                  type="file"
-                  name="image1"
-                  accept="image/*"
-                  onChange={handleMandatoryInput}
-                  className="mb-2"
-                />
-                <input
-                  type="file"
-                  name="image2"
-                  accept="image/*"
-                  onChange={handleMandatoryInput}
-                  className="mb-2"
-                />
-                <input
-                  type="file"
-                  name="image3"
-                  accept="image/*"
-                  onChange={handleMandatoryInput}
-                  className="mb-2"
-                />
+                <div className="flex ">
+                  <div>
+                    <input
+                      type="file"
+                      name="image1"
+                      accept="image/*"
+                      onChange={handleMandatoryInput}
+                      className="mb-2"
+                    />
+                    {error.image1 && (
+                      <p className="text-red-500">{error.image1}</p>
+                    )
+                    }
+                  </div>
+                  <div>
+                    <input
+                      type="file"
+                      name="image2"
+                      accept="image/*"
+                      onChange={handleMandatoryInput}
+                      className="mb-2"
+                    />
+                    {error.image2 && (
+                      <p className="text-red-500">{error.image2}</p>
+                    )}
+
+                  </div>
+                  <div>
+                    <input
+                      type="file"
+                      name="image3"
+                      accept="image/*"
+                      onChange={handleMandatoryInput}
+                      className="mb-2"
+                    />
+                    {error.image3 && (
+                      <p className="text-red-500">{error.image3}</p>
+                    )}
+                  </div>
+                </div>
               </div>
 
               {/* Bedrooms, Bathrooms, Kitchen */}
@@ -300,6 +349,9 @@ const page = () => {
                       onChange={handleMandatoryInput}
                       className="mt-1 p-2 w-full border rounded-md focus:outline-none focus:ring-1 focus:ring-blue-200 focus:border-transparent"
                     />
+                    {error.bedrooms && (
+                      <p className="text-red-500">{error.bedrooms}</p>
+                    )}
                   </div>
 
                   {/* Bathrooms */}
@@ -318,6 +370,9 @@ const page = () => {
                       onChange={handleMandatoryInput}
                       className="mt-1 p-2 w-full border rounded-md focus:outline-none focus:ring-1 focus:ring-blue-200 focus:border-transparent"
                     />
+                    {error.bathrooms && (
+                      <p className="text-red-500">{error.bathrooms}</p>
+                    )}
                   </div>
 
                   {/* Kitchen */}
@@ -336,6 +391,9 @@ const page = () => {
                       onChange={handleMandatoryInput}
                       className="mt-1 p-2 w-full border rounded-md focus:outline-none focus:ring-1 focus:ring-blue-200 focus:border-transparent"
                     />
+                    {/* {error.kitchen && ( */}
+                    <p className="text-red-500">{error.kitchen}</p>
+                    {/* // )} */}
                   </div>
                 </div>
               </div>
@@ -359,6 +417,9 @@ const page = () => {
                       onChange={handleMandatoryInput}
                       className="mt-1 p-2 w-full border rounded-md appearance-none focus:outline-none focus:ring-1 focus:ring-blue-200 focus:border-transparent"
                     />
+                    {error.price && (
+                      <p className="text-red-500">{error.price}</p>
+                    )}
                   </div>
 
                   {/* Year Built */}
@@ -378,6 +439,9 @@ const page = () => {
                       onChange={handleMandatoryInput}
                       className="mt-1 p-2 w-full border rounded-md appearance-none focus:outline-none focus:ring-1 focus:ring-blue-200 focus:border-transparent"
                     />
+                    {error.yearBuilt && (
+                      <p className="text-red-500">{error.yearBuilt}</p>
+                    )}
                   </div>
 
                   {/* Size in Square Feet */}
@@ -396,6 +460,9 @@ const page = () => {
                       onChange={handleMandatoryInput}
                       className="mt-1 p-2 w-full border rounded-md focus:outline-none focus:ring-1 focus:ring-blue-200 focus:border-transparent"
                     />
+                    {error.size && (
+                      <p className="text-red-500">{error.size}</p>
+                    )}
                   </div>
                 </div>
               </div>

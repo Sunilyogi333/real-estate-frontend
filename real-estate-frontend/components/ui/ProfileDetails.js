@@ -63,7 +63,8 @@ const ProfileDetails = ({user,visibility,editButtonClickAction})=>{
           <span>{phoneNumber ? phoneNumber : ''}</span>
         </li>
       </ul>
-  </div>);
+  </div>
+  );
 }
 
 export default ProfileDetails;

@@ -60,6 +60,16 @@
       "static/chunks/webpack.js",
       "static/chunks/main-app.js",
       "static/chunks/app/Property/page.js"
+    ],
+    "/editProperty/[id]/page": [
+      "static/chunks/webpack.js",
+      "static/chunks/main-app.js",
+      "static/chunks/app/editProperty/[id]/page.js"
+    ],
+    "/agentInfo/[id]/page": [
+      "static/chunks/webpack.js",
+      "static/chunks/main-app.js",
+      "static/chunks/app/agentInfo/[id]/page.js"
     ]
   }
 }

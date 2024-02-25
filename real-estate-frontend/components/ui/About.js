@@ -77,9 +77,8 @@ const about = ({propertyDetails}) => {
                   </div>
                 </div>
                 <div>
-                  <Link
+                <Link href="/agentInfo" as={`/agentInfo/${propertyDetails.agentId}`} 
                     className="font-semibold bg-blue-200 text-blue-500 rounded px-10 py-4"
-                    href="/agentInfo"
                   >
                     Get more info
                   </Link>

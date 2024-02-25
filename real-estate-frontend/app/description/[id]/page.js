@@ -16,11 +16,13 @@ const page = ({ params }) => {
   const {id}  = params;
   console.log('id', id);
   const [propertyDetails, setPropertyDetails] = useState({
+    agentId: "",
     propertyName: "",
     provision: '',
     district: '',
     municipality: '',
-    village: '',    propertyType: "commercial",
+    village: '',   
+    propertyType: "commercial",
     bedrooms: "",
     bathrooms: "",
     kitchen: "",
@@ -74,6 +76,7 @@ const page = ({ params }) => {
         const response = await axios.get("http://localhost:9000/getProperty/" + id);
         console.log('response her vai', response);
         setPropertyDetails({
+          agentId: response.data.userId,
           propertyName: response.data.propertyName,
           provision : response.data.provision,
           district: response.data.district,

@@ -776,4 +776,33 @@ router.post(
     });
   }
 );
+
+router.get("/agent/:agentId", (req, res) => {
+  const agentId = req.params.agentId;
+  console.log("req.params: ", req.params);
+  console.log("agentId: ", agentId);
+
+  //select all details of agent and count the properties of the agent
+
+  const sql = `
+  SELECT * FROM users 
+  INNER JOIN property
+  ON users.userId = property.userId
+  INNER JOIN propertyImages 
+  ON property.propertyId = propertyImages.propertyId
+  WHERE users.userId = ?;
+ `;
+  con.query(sql, [agentId], (err, result) => {
+    if (err) {
+      console.error("Error fetching agent details:", err);
+      return res.status(500).json({ error: "Internal Server Error" });
+    }
+
+    if (result.length === 0) {
+      return res.status(404).json({ error: "Agent not found" });
+    }
+
+    res.json(result); // Assuming you only expect one agent
+  });
+});
 module.exports = router;
