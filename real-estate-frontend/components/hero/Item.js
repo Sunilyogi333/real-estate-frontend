@@ -22,7 +22,7 @@ const Item = ({ properties }) => {
   } = properties || {};
   // console.log(properties);
   // console.log('img',properties.image1);
-  console.log('imageeee', image1);
+  // console.log('imageeee', image1);
 
   return (
     <div className="w-[21rem]">
@@ -35,7 +35,7 @@ const Item = ({ properties }) => {
                   ? `http://localhost:9000/images/uploads/${image1}`
                   : "https://images.unsplash.com/photo-1568605114967-8130f3a36994?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
               }
-              alt=""
+              alt="Property"
             />
 
           </div>

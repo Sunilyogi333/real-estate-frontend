@@ -48,8 +48,8 @@ const page = () => {
       ...prevState,
       [name]: type === "file" ? e.target.files[0] : value,
     }));
-    const error = Validation(formData);
-    setError(error);
+    setError({ ...error, [e.target.name]: "" });
+
   };
 
   const handleOtherInput = (e) => {
@@ -58,8 +58,6 @@ const page = () => {
       ...prevState,
       [name]: value,
     }));
-    const error = Validation(formData);
-    setError(error);
   };
 
   const [isLoggedIn, setIsLoggedIn] = useState(false); // Set to false initially
@@ -94,7 +92,10 @@ const page = () => {
   const handleSubmit = async () => {
     const error = Validation(formData);
     setError(error);
+    console.log("formdata", formData);
+    console.log("error", error);
     if (Object.keys(error).length > 0) {
+      console.log("error length", Object.keys(error).length);
       return;
     }
     const formDataToSend = new FormData();

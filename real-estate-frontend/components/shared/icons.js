@@ -49,6 +49,10 @@ const Icons = ({ type }) => {
     url = "/images/icons/property.png";
     ht = 30;
     wt = 24;
+  } else if (type == "verified"){
+    url = "/images/icons/verified.png";
+    ht = 20;
+    wt = 20;
   }
 
   return (

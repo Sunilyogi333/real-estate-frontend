@@ -26,14 +26,14 @@ router.use(express.json());
 router.use(cookieParser());
 
 
-const verifyUser = (req, res, next) => { 
+const verifyUser = (req, res, next) => {
   const token = req.cookies.token;
   if (!token) {
-    return res.json({ Error: "Unauthorized", status:false });
+    return res.json({ Error: "Unauthorized", status: false });
   } else {
-     jwt.verify(token, secretKey, (err, decoded) => {
+    jwt.verify(token, secretKey, (err, decoded) => {
       if (err) {
-        return res.json({ Error: "Token is not valid", status: false});
+        return res.json({ Error: "Token is not valid", status: false });
       } else {
         req.userId = decoded.userId;
         next();
@@ -45,7 +45,7 @@ const verifyUser = (req, res, next) => {
 
 
 router.get("/verify", verifyUser, (req, res) => {
- return res.json({
+  return res.json({
     Status: "Success",
     message: "Authorized",
     success: true,
@@ -137,13 +137,13 @@ router.post("/adminLogin", function (req, res) {
   console.log("adminEmail: ", adminEmail);
   console.log("adminPassword: ", adminPassword);
   const sql = "SELECT * FROM admin WHERE adminEmail = ? AND adminPassword = ?";
-  con.query(sql, [adminEmail,adminPassword], (err, result) => {
+  con.query(sql, [adminEmail, adminPassword], (err, result) => {
     if (err) return res.json({ Error: "Login error in server" });
     if (result.length === 0) return res.json({ accountError: "Admin not found" });
     res.json({
       message: "Login success",
       success: true,
-    }); 
+    });
   });
 });
 
@@ -176,7 +176,7 @@ router.get("/getUserProfile/:userId", (req, res) => {
 
   con.query(sql, [userId], (err, result) => {
     if (err) {
-      console.error("Error fetching user profile:", err);
+      console.error("Error fetching user details:", err);
       return res.status(500).json({ error: "Internal Server Error" });
     }
 
@@ -194,16 +194,35 @@ router.put("/updateProfile",upload.single('profilePicture'), (req, res) => {
   const userId = req.body.userId;
   const profilePicture = req.file ? req.file.filename : req.body.profilePicture;
   const username = req.body.username;
-  const date_of_birth = req.body.date_of_birth;
-  const phoneNumber = req.body.phoneNumber ? req.body.phoneNumber : null;
+  // const date_of_birth = req.body.date_of_birth === "" ? null : req.body.date_of_birth;
+  if(req.body.date_of_birth === null){
+    date_of_birth = null;
+  }else{
+    date_of_birth = req.body.date_of_birth;
+  }
+  const phoneNumber = req.body.phoneNumber === "" ? null : req.body.phoneNumber;
+  // const date_of_birth = req.body.date_of_birth === null ? req.body.date_of_birth : null;
+  // const phoneNumber = req.body.phoneNumber === null ? req.body.phoneNumber : null ;
+  // if(req.body.phoneNumber === null){
+  //   phoneNumber = null;
+  // }else if(req.body.phoneNumber === undefined){
+  //   phoneNumber = null;
+  // }
+  // else if(req.body.phoneNumber=== ""){
+  //   phoneNumber = null;
+  // }
+  // {
+  //   phoneNumber = req.body.phoneNumber;
+  // }
+
+
 
   console.log('phpneNumber: ', phoneNumber);
 
-  const sql = `UPDATE users SET profilePicture = ?, username = ?, phoneNumber = ?, date_of_birth=? WHERE userId = ?`;
+  const sql = `UPDATE users SET profilePicture = '${profilePicture}', username = '${username}', phoneNumber = ${phoneNumber}, date_of_birth = '${date_of_birth}' WHERE userId = ?`;
 
   con.query(
-    sql,
-    [profilePicture, username, phoneNumber, date_of_birth, userId],
+    sql,[userId],
     (err, result) => {
       if (err) {
         console.error("Error updating user profile:", err);
@@ -215,6 +234,7 @@ router.put("/updateProfile",upload.single('profilePicture'), (req, res) => {
   );
 });
 
+
 router.post(
   "/kycForm",
   upload.fields([
@@ -222,32 +242,40 @@ router.post(
     { name: "CFPhoto", maxCount: 1 },
     { name: "CBPhoto", maxCount: 1 },
   ]),
-(req, res) => {
-  const userPhoto = req.files["userPhoto"][0].filename;
-  const CFPhoto = req.files["CFPhoto"][0].filename;
-  const CBPhoto = req.files["CBPhoto"][0].filename;
+  (req, res) => {
+    const userPhoto = req.files["userPhoto"][0].filename;
+    const CFPhoto = req.files["CFPhoto"][0].filename;
+    const CBPhoto = req.files["CBPhoto"][0].filename;
 
-  var uID = req.body.uID;
-  var firstName = req.body.firstName;
-  var lastName = req.body.lastName;
-  var date_of_birth = req.body.date_of_birth;
-  var phoneNumber = req.body.phoneNumber;
-  var provision = req.body.provision;
-  var district = req.body.district;
-  var municipality = req.body.municipality;
-  var village = req.body.village;
+    var uID = req.body.uID;
+    var firstName = req.body.firstName;
+    var lastName = req.body.lastName;
+    var date_of_birth = req.body.date_of_birth;
+    var phoneNumber = req.body.phoneNumber;
+    var provision = req.body.provision;
+    var district = req.body.district;
+    var municipality = req.body.municipality;
+    var village = req.body.village;
 
-  var sql =
-    "INSERT INTO kycForm (uID, firstName, lastName, date_of_birth,  phoneNumber, provision, district, municipality, village, userPhoto, CFPhoto, CBPhoto) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
-  var values = [uID, firstName, lastName, date_of_birth, phoneNumber, provision, district, municipality, village, userPhoto, CFPhoto, CBPhoto];
-console.log("values: ", values);
-  con.query(sql, values, function (err, result) {
-    if (err) {
-      return res.json({ Error: "Error inserting kycForm data" });
-    }
-    return res.json({ message: "kycForm successfully added", success: true });
-  });
-})
+    var sql =
+      "INSERT INTO kycForm (uID, firstName, lastName, date_of_birth,  phoneNumber, provision, district, municipality, village, userPhoto, CFPhoto, CBPhoto) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+    var values = [uID, firstName, lastName, date_of_birth, phoneNumber, provision, district, municipality, village, userPhoto, CFPhoto, CBPhoto];
+    console.log("values: ", values);
+    con.query(sql, values, function (err, result) {
+      if (err) {
+        return res.json({ Error: "Error inserting kycForm data" });
+      }
+      const sqlUpdateVerified = `UPDATE users SET verification = ? WHERE userId = ?`;
+
+      con.query(sqlUpdateVerified, ['Pending', uID], (err, resultVerified) => {
+        if (err) {
+          console.error("Error updating verified:", err);
+          return res.status(500).json({ error: "Internal Server Error" });
+        }
+      });
+      return res.json({ message: "kycForm successfully added", success: true });
+    });
+  })
 
 router.get("/getkycForm", (req, res) => {
   const sql = `SELECT * FROM kycForm where verification = 'Pending'`;
@@ -289,9 +317,9 @@ router.post("/verifyKycForm/:id", (req, res) => {
   console.log("req.params: ", req.params);
   console.log("id: ", id);
 
-  const sql = `UPDATE kycForm SET verification = 'Verified' WHERE id = ?`;
+  const sql = `UPDATE kycForm SET verification = ? WHERE id = ?`;
 
-  con.query(sql, [id], (err, result) => {
+  con.query(sql, ['Verified',id], (err, result) => {
     if (err) {
       console.error("Error verifying kycForm:", err);
       return res.status(500).json({ error: "Internal Server Error" });
@@ -321,8 +349,19 @@ router.post("/verifyKycForm/:id", (req, res) => {
         }
         const profilePicture = resultUser[0].profilePicture;
         const phoneNumber = resultUser[0].phoneNumber;
+        const verified = resultUser[0].verified;
         const date_of_birth = resultUser[0].date_of_birth;
-        if(profilePicture === null){
+
+        const sqlUpdateVerified = `UPDATE users SET verification = ? WHERE userId = ?`;
+
+          con.query(sqlUpdateVerified, ['Verified', userId], (err, resultVerified) => {
+            if (err) {
+              console.error("Error updating verified:", err);
+              return res.status(500).json({ error: "Internal Server Error" });
+            }
+          });
+
+        if (profilePicture === null) {
           const sqlUpdatePicture = `UPDATE users SET profilePicture = ? WHERE userId = ?`;
 
           con.query(sqlUpdatePicture, [result[0].userPhoto, userId], (err, resultPicture) => {
@@ -332,7 +371,7 @@ router.post("/verifyKycForm/:id", (req, res) => {
             }
           });
         }
-        if(phoneNumber === null){
+        if (phoneNumber === null) {
           const sqlUpdatePhoneNumber = `UPDATE users SET phoneNumber = ? WHERE userId = ?`;
 
           con.query(sqlUpdatePhoneNumber, [result[0].phoneNumber, userId], (err, resultPhoneNumber) => {
@@ -342,7 +381,9 @@ router.post("/verifyKycForm/:id", (req, res) => {
             }
           });
         }
-        if(date_of_birth === null){
+          
+
+        if (date_of_birth === null) {
           const sqlUpdateDateOfBirth = `UPDATE users SET date_of_birth = ? WHERE userId = ?`;
 
           con.query(sqlUpdateDateOfBirth, [result[0].date_of_birth, userId], (err, resultDateOfBirth) => {
@@ -372,6 +413,28 @@ router.post("/rejectKycForm/:id", (req, res) => {
       return res.status(500).json({ error: "Internal Server Error" });
     }
 
+    //get uID from kycForm and then update the user table and set the verification to rejected
+    const getSql = `SELECT * FROM kycForm WHERE id = ?`;
+    con.query(getSql, [id], (err, result) => {
+      if (err) {
+        console.error("Error fetching kycForm details:", err);
+        return res.json({ error: "Internal Server Error" });
+      }
+
+      if (result.length === 0) {
+        return res.json({ error: "kycForm not found" });
+      }
+      const userId = result[0].uID;
+      const sqlUpdateVerified = `UPDATE users SET verification = ? WHERE userId = ?`;
+
+      con.query(sqlUpdateVerified, ['Rejected', userId], (err, resultVerified) => {
+        if (err) {
+          console.error("Error updating verified:", err);
+          return res.status(500).json({ error: "Internal Server Error" });
+        }
+      });
+    });
+
     res.json({ message: "kycForm rejected successfully", success: true });
   });
 });
@@ -391,10 +454,9 @@ router.get("/checkVerify/:userId", (req, res) => {
     if (result.length === 0) {
       return res.json({ error: "User not found" });
     }
-const message = result[0].verification;
-    res.json({message});
+    const message = result[0].verification;
+    res.json({ message });
   });
-
 });
 
 router.post(
@@ -414,8 +476,8 @@ router.post(
     var provision = req.body.provision;
     var district = req.body.district;
     var municipality = req.body.municipality;
-    var village = req.body.village;   
-     var propertyType = req.body.propertyType;
+    var village = req.body.village;
+    var propertyType = req.body.propertyType;
     var bedrooms = req.body.bedrooms;
     var bathrooms = req.body.bathrooms;
     var kitchen = req.body.kitchen;
@@ -438,10 +500,10 @@ router.post(
 
       var propertySql =
         "INSERT INTO property(userId, propertyName, provision, district, municipality, village, propertyType, bedrooms, bathrooms, kitchen, price, yearBuilt, size, parking, garden, fireplace, cooling, heating, laundry, description) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
-      var propertyValues = [userId, propertyName, provision, district, municipality, village, propertyType, bedrooms, bathrooms, kitchen,price,yearBuilt,size,parking,garden,fireplace,cooling,heating,laundry,description];
+      var propertyValues = [userId, propertyName, provision, district, municipality, village, propertyType, bedrooms, bathrooms, kitchen, price, yearBuilt, size, parking, garden, fireplace, cooling, heating, laundry, description];
 
       con.query(
-        propertySql,propertyValues,function (err, propertyResult) {
+        propertySql, propertyValues, function (err, propertyResult) {
           console.log("propertyValues: ", propertyValues);
           console.log("propertyResult: ", propertyResult);
           if (err) {
@@ -503,7 +565,7 @@ router.get("/getProperties", (req, res) => {
   });
 });
 
-router.get("/getProperty/:id",(req, res) => {
+router.get("/getProperty/:id", (req, res) => {
   console.log("req.params: ", req.params);
   const propertyId = req.params.id;
   console.log("req.params: ", req.params);
@@ -805,4 +867,64 @@ router.get("/agent/:agentId", (req, res) => {
     res.json(result); // Assuming you only expect one agent
   });
 });
+
+//select all and count the total number of users and set it to the variable totalUsersNumber, then total verified users and set it to the variable totalVerifiedUsers, then total number users in property table, then total listings and set it to the variable totalListings then combine them in one object and send it to the frontend
+
+router.get("/getUsers", (req, res) => {
+  const sql = `SELECT * FROM users`;
+
+  con.query(sql, (err, result) => {
+    if (err) {
+      console.error("Error fetching users:", err);
+      return res.status(500).json({ error: "Internal Server Error" });
+    }
+
+    const totalUsersNumber = result.length;
+
+    const sqlVerified = `SELECT * FROM users WHERE verification = 'Verified'`;
+
+    con.query(sqlVerified, (err, resultVerified) => {
+      if (err) {
+        console.error("Error fetching verified users:", err);
+        return res.status(500).json({ error: "Internal Server Error" });
+      }
+
+      const totalVerifiedUsers = resultVerified.length;
+
+      const sqlProperties = `SELECT * FROM property`;
+
+      con.query(sqlProperties, (err, resultProperties) => {
+        if (err) {
+          console.error("Error fetching properties:", err);
+          return res.status(500).json({ error: "Internal Server Error" });
+        }
+
+        const totalListings = resultProperties.length;
+
+        //now count the total number of userId in property table and set it to the variable total sellers
+        const sqlSellers = `SELECT COUNT(DISTINCT userId) AS count FROM property`;
+
+        con.query(sqlSellers, (err, resultSellers) => {
+          if (err) {
+            console.error("Error fetching sellers:", err);
+            return res.status(500).json({ error: "Internal Server Error" });
+          }
+
+          const totalSellers = resultSellers[0].count;
+
+          const data = {
+            totalUsersNumber,
+            totalVerifiedUsers,
+            totalSellers,
+            totalListings,
+          };
+
+          res.json(data);
+        });
+      });
+    });
+  });
+}
+);
+
 module.exports = router;

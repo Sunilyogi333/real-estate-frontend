@@ -69,7 +69,14 @@ const viewDetails = ({ params, handleOptionClick, setFormDetails, formDetails })
             }
 
             // Make a DELETE request to server with the propertyId
-            await axios.post(`http://localhost:9000/rejectKycForm/${formId}`);
+            const response = await axios.post(`http://localhost:9000/rejectKycForm/${formId}`);
+             if (response.data.success) {
+                const updatedFormDetails = formDetails.filter((form) => form.id !== formId);
+                setFormDetails(updatedFormDetails);
+                // console.log("updatedFormDetails", updatedFormDetails);
+                 handleOptionClick('KYC Forms');
+
+            }
         } catch (error) {
             console.error("Error deleting property:", error);
         }
@@ -89,7 +96,7 @@ const viewDetails = ({ params, handleOptionClick, setFormDetails, formDetails })
                             </div>
                             <div className='flex gap-2 text-base'>
                                 <p>Date of Birth: </p>
-                                <p>{details.date_of_birth}</p>
+                                <p>{details.date_of_birth.split('T')[0]}</p>
                             </div>
                             <div className='flex gap-2 text-base'>
                                 <p>Phone Number: </p>

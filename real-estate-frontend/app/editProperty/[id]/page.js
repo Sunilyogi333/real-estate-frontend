@@ -52,8 +52,7 @@ const page = ({ params }) => {
             ...prevState,
             [name]: type === "file" ? e.target.files[0] : value,
         }));
-        const error = Validation(formData);
-        setError(error);
+        setError({ ...error, [e.target.name]: "" });
     };
 
     const handleOtherInput = (e) => {
@@ -62,8 +61,6 @@ const page = ({ params }) => {
             ...prevState,
             [name]: value,
         }));
-        const error = Validation(formData);
-        setError(error);
     };
 
     const handleImage1 = (e) => {

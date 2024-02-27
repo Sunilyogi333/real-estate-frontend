@@ -20,13 +20,13 @@ const AboutHome = ({ properties }) => {
 
   return (
     <>
-      <div className='h-max'>
-        <div className="w-full h-[80vh] rounded overflow-hidden relative px-38">
-          {images.map((image, index) => (
+      <div className='h-max' >
+        <div className="relative w-full h-[80vh] rounded overflow-hidden top-0 px-38">
+        {images.map((image, index) => (
             <img
               key={index}
               alt="Main Image"
-              className="block h-auto w-full lg:h-full rounded-md overflow-hidden lg:px-1 object-cover object-center absolute top-0 left-0 transition-opacity duration-1000"
+              className="absolute top-0 left-0  h-auto w-full lg:h-full rounded-md overflow-hidden lg:px-1 object-cover object-center transition-opacity duration-1000"
               src={image}
               style={{
                 zIndex: index === currentImageIndex ? 2 : 1,
@@ -50,7 +50,7 @@ const AboutHome = ({ properties }) => {
               ))}
             </div>
           </div>
-          {/* <hr className='my-8 mt-12 border border-1 border-gray-200'></hr> */}
+          <hr className='my-8 mt-12 border border-1 border-gray-200'></hr>
           <div className='mt-12'>
             <h1 className="text-4xl font-bold text-center text-gray-700">OUR SERVICES</h1>
             <div className="flex items-center justify-around gap-2 mt-8">

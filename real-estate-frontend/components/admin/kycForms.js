@@ -45,14 +45,14 @@ const kycForms = ({ formDetails, handleOptionClick, setFormId}) => {
                                 <td className="py-2 md:py-4 px-4 border-b">hello</td>
                                 <td className="py-4 md:py-4 px-4 border-b">
                                     <div className="flex flex-col lg:flex-row gap-4 overflow-hidden">
-                                        <Button
-                                            onClick={(event) => {
+                                        <button
+                                            onClick={(e) => {
                                                 setFormId(form.id);
-                                                event.stopPropagation();
+                                                // e.stopPropagation();
                                             }}
                                             className="bg-blue-500 text-white w-36 px-4 py-2 z-10 rounded text-center">
                                             View Details
-                                        </Button>
+                                        </button>
                                     </div>
                                 </td>
                             </tr>

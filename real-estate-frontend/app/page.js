@@ -34,9 +34,11 @@ const page = () => {
 
   return (
     <>
+    <div>
       <Header />
       <AboutHome properties={properties}/>
       <Footer />
+    </div>
     </>
   );
 };

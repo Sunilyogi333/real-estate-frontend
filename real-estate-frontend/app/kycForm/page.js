@@ -7,6 +7,7 @@ import { useContext } from "react";
 import Footer from "@/components/shared/footer";
 import { useRouter } from "next/navigation";
 import { useEffect } from "react";
+import Validation from "./kycFormValidation";
 axios.defaults.withCredentials = true;
 
 
@@ -27,6 +28,8 @@ const page = () => {
         CFPhoto: '',
         CBPhoto: '',
     });
+
+    const [error, setError] = useState({});
 
     const handleInput = (e) => {
         const { name, value, type } = e.target;
@@ -63,6 +66,11 @@ const page = () => {
 
 
     const handleSubmit = async () => {
+        const error = Validation(formData);
+        setError(error);
+        if (Object.keys(error).length > 0) {
+            return;
+        }
         const formDataToSend = new FormData();
         for (const key in formData) {
             formDataToSend.append(key, formData[key]);
@@ -114,6 +122,9 @@ const page = () => {
                                             onChange={handleInput}
                                             className="mt-1 p-2 w-full border rounded-md focus:outline-none focus:ring-1 focus:ring-blue-200 focus:border-transparent"
                                         />
+                                        {error.firstName && (
+                                            <p className="text-red-500">{error.firstName}</p>
+                                        )}
                                     </div>
 
                                     <div className="mb-4">
@@ -131,6 +142,9 @@ const page = () => {
                                             onChange={handleInput}
                                             className="mt-1 p-2 w-full border rounded-md focus:outline-none focus:ring-1 focus:ring-blue-200 focus:border-transparent"
                                         />
+                                        {error.lastName && (
+                                            <p className="text-red-500">{error.lastName}</p>
+                                        )}
                                     </div>
                                     {/* Phone Number */}
                                     <div className="mb-4">
@@ -147,6 +161,9 @@ const page = () => {
                                             onChange={handleInput}
                                             className="mt-1 p-2 w-full border rounded-md focus:outline-none focus:ring-1 focus:ring-blue-200 focus:border-transparent"
                                         />
+                                        {error.phoneNumber && (
+                                            <p className="text-red-500">{error.phoneNumber}</p>
+                                        )}
                                     </div>
 
                                     {/* date of birth */}
@@ -167,6 +184,9 @@ const page = () => {
                                             className="mt-1 p-2 w-full border rounded-md focus:outline-none focus:ring-1 focus:ring-blue-200 focus:border-transparent"
                                         />
                                         <span className='text-gray-500 text-xs ml-2'>- must be 18 years old</span>
+                                        {error.date_of_birth && (
+                                            <p className="text-red-500">{error.date_of_birth}</p>
+                                        )}
                                     </div>
                                 </div>
                             </div>
@@ -190,6 +210,10 @@ const page = () => {
                                             onChange={handleInput}
                                             className="mb-2 mt-2"
                                         />
+                                        {error.userPhoto && (
+                                            <p className="text-red-500">{error.userPhoto}</p>
+                                        )
+                                        }
                                     </div>
                                     <div className="mb-4">
                                         <label
@@ -206,6 +230,10 @@ const page = () => {
                                             onChange={handleInput}
                                             className="mb-2 mt-2"
                                         />
+                                        {error.CFPhoto && (
+                                            <p className="text-red-500">{error.CFPhoto}</p>
+                                        )}
+
                                     </div>
                                     <div className="mb-4">
                                         <label
@@ -222,6 +250,10 @@ const page = () => {
                                             onChange={handleInput}
                                             className="mb-2 mt-2"
                                         />
+                                        {error.CBPhoto && (
+                                            <p className="text-red-500">{error.CBPhoto}</p>
+                                        )}
+
                                     </div>
                                 </div>
                             </div>
@@ -246,6 +278,10 @@ const page = () => {
                                             onChange={handleInput}
                                             className="mt-1 p-2 w-full border rounded-md focus:outline-none focus:ring-1 focus:ring-blue-200 focus:border-transparent"
                                         />
+                                        {error.provision && (
+                                            <p className="text-red-500">{error.provision}</p>
+                                        )
+                                        }
                                     </div>
 
                                     {/* District */}
@@ -264,6 +300,9 @@ const page = () => {
                                             onChange={handleInput}
                                             className="mt-1 p-2 w-full border rounded-md focus:outline-none focus:ring-1 focus:ring-blue-200 focus:border-transparent"
                                         />
+                                        {error.district && (
+                                            <p className="text-red-500">{error.district}</p>
+                                        )}
                                     </div>
 
                                     {/* Municipality */}
@@ -282,6 +321,9 @@ const page = () => {
                                             onChange={handleInput}
                                             className="mt-1 p-2 w-full border rounded-md focus:outline-none focus:ring-1 focus:ring-blue-200 focus:border-transparent"
                                         />
+                                        {error.municipality && (
+                                            <p className="text-red-500">{error.municipality}</p>
+                                        )}
                                     </div>
                                     <div className="mb-4">
                                         <label
@@ -298,6 +340,9 @@ const page = () => {
                                             onChange={handleInput}
                                             className="mt-1 p-2 w-full border rounded-md focus:outline-none focus:ring-1 focus:ring-blue-200 focus:border-transparent"
                                         />
+                                        {error.village && (
+                                            <p className="text-red-500">{error.village}</p>
+                                        )}
                                     </div>
                                 </div>
                             </div>

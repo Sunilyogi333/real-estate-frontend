@@ -18,6 +18,7 @@ const page = () => {
   const [properties, setProperties] = useState([]);
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const router = useRouter();
+  const [totalProperties, setTotalProperties] = useState(0);
 
   useEffect(() => {
     const verify = async () => {
@@ -30,7 +31,7 @@ const page = () => {
         } else {
           console.log('user is not logged in');
           setIsLoggedIn(false); // Set the state to false if not logged in
-          router.push('/login');
+          router.push('/');
         }
       } catch (error) {
         console.error("Error fetching properties:", error);
@@ -44,7 +45,9 @@ const page = () => {
     const fetchData = async () => {
       try {
         const response = await axios.get("http://localhost:9000/getProperties",{withCredentials: true});
-        setProperties(response.data); // Array of properties
+        setProperties(response.data);
+        setTotalProperties(response.data.length);
+         // Array of properties
       } catch (error) {
         console.error("Error fetching properties:", error);
       }
@@ -60,7 +63,7 @@ const page = () => {
   return (
     <>
       <Header />
-      <Search />
+      <Search setProperties={setProperties} properties={properties} totalProperties={totalProperties}/>
       <div className="lg:mx-48 px-12 flex flex-col md:flex-col md:justify-between lg:px-0 lg:flex-row">
         <div className="flex lg:gap-10 flex-wrap mt-8 lg:w-full">
           {properties.map((properties, index) => (

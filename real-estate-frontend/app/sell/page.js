@@ -33,7 +33,14 @@ const page = () => {
                   console.log('user is verified');
                   setIsVerified(true);
                 } else {
-                  router.push('/kycForm');
+                  //ask you need to verify if yes then redirect to kycForm
+                  const verify = confirm("You need KYC verification to sell properties. Do you want to fill the form now");
+                  if (verify) {
+                    router.push('/kycForm');
+                  }
+                  else {
+                    router.push('/buy');
+                }
                 }
               } catch (error) {
                 console.error("Error fetching properties:", error);
@@ -41,7 +48,7 @@ const page = () => {
             } else {
               console.log('user is not logged in');
               setIsLoggedIn(false); // Set the state to false if not logged in
-              router.push('/login');
+              router.push('/');
             }
           } catch (error) {
             console.error("Error fetching properties:", error);
@@ -49,26 +56,6 @@ const page = () => {
         };
     
         verify();
-      }, []);
-
-      useEffect(() => {
-        //verify seller
-        const verifySeller = async () => {
-          try {
-            const res = await axios.get("http://localhost:9000/checkVerify/"+userId,{withCredentials: true});
-            console.log('verify response', res);
-            if (res.data.message === "Verified") {
-              console.log('user is verified');
-            } else {
-             // Set the state to false if not logged in
-              router.push('/kycForm');
-            }
-          } catch (error) {
-            console.error("Error fetching properties:", error);
-          }
-        };
-
-        verifySeller();
       }, []);
 
   useEffect(() => {
@@ -87,12 +74,13 @@ const page = () => {
     fetchData();
   }, [userId]);
 
-  if (!isLoggedIn) {
-    return null;
-  }
   if (!isVerified) {
     return null;
   }
+  if (!isLoggedIn) {
+    return null;
+  }
+  
   console.log("Myproperties: ", Myproperties);
   return (
     <>

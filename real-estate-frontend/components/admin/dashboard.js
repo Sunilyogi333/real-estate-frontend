@@ -1,6 +1,9 @@
+"use client"
 import React from 'react'
 
-const dashboard = () => {
+const dashboard = ({totalUsers}) => {
+
+
     return (
         // <div>dashboard</div>
         <>
@@ -9,25 +12,25 @@ const dashboard = () => {
                <div className='bg-sky-300 w-56 h-28 border rounded-md flex justify-center items-center'>
                     <div className='flex flex-col items-center justify-center'>
                         <p className='text-2xl font-medium'>Total Users</p>
-                        <p className='text-2xl font-medium'>50</p>
+                        <p className='text-2xl font-medium'>{totalUsers.totalUsersNumber}</p>
                     </div>
                 </div>
                 <div className='bg-sky-300 w-56 h-28 border rounded-md flex justify-center items-center'>
                     <div className='flex flex-col items-center justify-center'>
                         <p className='text-2xl font-medium'>Verifed Users</p>
-                        <p className='text-2xl font-medium'>50</p>
+                        <p className='text-2xl font-medium'>{totalUsers.totalVerifiedUsers}</p>
                     </div>
                 </div>
                 <div className='bg-sky-300 w-56 h-28 border rounded-md flex justify-center items-center'>
                     <div className='flex flex-col items-center justify-center'>
                         <p className='text-2xl font-medium'>Total Sellers</p>
-                        <p className='text-2xl font-medium'>50</p>
+                        <p className='text-2xl font-medium'>{totalUsers.totalSellers}</p>
                     </div>
                 </div>
                 <div className='bg-sky-300 w-56 h-28 border rounded-md flex justify-center items-center'>
                     <div className='flex flex-col items-center justify-center'>
-                        <p className='text-2xl font-medium'>Total Buyers</p>
-                        <p className='text-2xl font-medium'>50</p>
+                        <p className='text-2xl font-medium'>Total listings</p>
+                        <p className='text-2xl font-medium'>{totalUsers.totalListings}</p>
                     </div>
                 </div>
                </div>

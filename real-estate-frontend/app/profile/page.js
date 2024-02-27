@@ -42,6 +42,7 @@ const Profile = () => {
     age: 0,
     email: '',
     phoneNumber: '',
+    verification: '',
   });
 
   const [editProfileVisiblity, setEditProfileVisibility] = useState(false);
@@ -53,7 +54,7 @@ const Profile = () => {
     const verify = async () => {
       try {
         const response = await axios.get("http://localhost:9000/verify",{withCredentials: true});
-        console.log('response', response);
+        // console.log('response', response);
         if (response.data.success) {
           console.log('user is logged in');
           setIsLoggedIn(true); // Set the state to true if logged in
@@ -75,17 +76,25 @@ const Profile = () => {
     const fetchUserDetails = async () => {
       try {
         const response = await axios.get('http://localhost:9000/getUserProfile/' + userId);
+        // if (response.data.profilePicture === null) {
+        //   response.data.profilePicture = null;
+        // }
+        console.log('User profile:', response.data);
         setUpdatedUser({
           userId: response.data.userId,
           profilePicture: response.data.profilePicture,
           username: response.data.username,
-          numberOfListings: response.data.numberOfListings,
+          // numberOfListings: response.data.numberOfListings,
           date_of_birth: response.data.date_of_birth,
           age: response.data.age,
           email: response.data.email,
           phoneNumber: response.data.phoneNumber,
+          verification: response.data.verification,
         })
-
+        // if(updatedUser.profilePicture === 'null'){
+          // updatedUser.profilePicture = null;
+          // console.log("Profile Picture is null")
+        // }
         setUser({
           name: response.data.username,
         })
@@ -93,28 +102,20 @@ const Profile = () => {
         console.error('Error fetching user profile:', error);
       }
     };
-
+    
     fetchUserDetails();
   }, []);
-
+  
   if (!isLoggedIn) {
     return null;
   }
-
-  console.log("User:", user);
+  
+  // console.log("Profile Picture herr:", updatedUser.profilePicture)
   console.log("Updated User:", updatedUser);
-
-  //sunil-dynamic update
-  // const handleSaveChanges = async () => {
-  //   try {
-  //     const response = await axios.put('http://localhost:9000/updateProfile', updatedUser);
-  //     console.log('Profile updated successfully:', response.data);
-  //   } catch (error) {
-  //     console.error('Error updating profile:', error);
-  //   }
-  // };
-
-
+  if (updatedUser.profilePicture === null) {
+    // updatedUser.profilePicture = null;
+    console.log("Profile Picture is null")
+  }
 
   const handleEditToogle = () => {
     console.log("Button clicked")

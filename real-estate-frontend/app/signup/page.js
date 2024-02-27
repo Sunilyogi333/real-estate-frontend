@@ -23,15 +23,19 @@ function page() {
 
   const handleInput = (event) => {
     setFormData({ ...formData, [event.target.name]: event.target.value });
-    const error = Validation(formData);
-    setError(error);
+    setError({ ...error, [event.target.name]: "" });
   };
+
 
   async function handleSubmit(event) {
     event.preventDefault();
     const error = Validation(formData);
     setError(error);
+    console.log("formdata", formData);
+    console.log("error", error);  
+
     if (Object.keys(error).length > 0) {
+      console.log("error length", Object.keys(error).length);
       return;
     }
     const res = await axios.post("http://localhost:9000/signup", formData);
@@ -51,7 +55,7 @@ function page() {
       <div className="h-full lg:flex lg:justify-center lg:items-center rounded-md overflow-hidden lg:w-[60vw] lg:h-[80vh] bg-yellow-400 shadow-[0_3px_10px_rgb(0,0,0,0.2)]">
         <div className="w-full lg:w-1/2 h-full p-6 bg-white shadow-md">
           <div className="flex gap-2">
-            <Image src={serenity} alt="" />
+            <Image src={serenity} alt="logo"></Image>
             <span className="font-bold text-gray-800 text-2xl">Serenity</span>
           </div>
           <div className="px-8 py-40 lg:py-20 lg:px-20">
@@ -67,7 +71,7 @@ function page() {
                     Username
                   </label>
                   <span className="text-xs text-red-500 italic mr-2">
-                    {error.name}
+                    {error.name ? error.name : ''}
                   </span>
                 </div>
                 <input
@@ -88,7 +92,7 @@ function page() {
                     Email
                   </label>
                   <span className="text-xs text-red-500 italic mr-2">
-                    {error.email}
+                    {error.email ? error.email : ''}
                     {serverError}
                   </span>
                 </div>
@@ -111,7 +115,7 @@ function page() {
                     Password
                   </label>
                   <span className="text-xs text-red-500 italic mr-2">
-                    {error.password}
+                    {error.password ? error.password : ''}
                   </span>
                 </div>
                 <input
@@ -137,7 +141,7 @@ function page() {
             </form>
             <p className="mt-8 text-sm text-center text-gray-600">
               Already have an account?
-              <Link href="/login" className="font-semibold text-blue-500 mr-1">
+              <Link href="/login" className="font-semibold text-blue-500 ml-1">
                 Login
               </Link>
             </p>
@@ -145,7 +149,7 @@ function page() {
         </div>
         {/* another div for showing one item inside it */}
         <div className="hidden md:block w-1/2 h-full bg-blue-50 shadow-md relative">
-          <Image src={Group}></Image>
+          <Image src={Group} alt="group"></Image>
           <div className="absolute top-28 left-16 p-4 bg-white">
             <Item />
           </div>

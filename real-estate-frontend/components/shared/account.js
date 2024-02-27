@@ -15,11 +15,11 @@ const account = ({user ={}}) => {
       setDropdownVisible(!isDropdownVisible);
     };
     // log the user object
-    console.log('user:', user);
+    // console.log('user:', user);
     const {profilePicture}= user;
   return (
     <>
-      <div className="relative">
+      <div className="relative z-50">
         <div className="flex justify-center items-center">
           <div className=" bg-blue-50 rounded-lg h-12 w-12 flex justify-center items-center">
             <Icons type={"notification"}></Icons>
@@ -49,7 +49,7 @@ const account = ({user ={}}) => {
         </div>
         {/* <div className="fixed bg-green-500 top-0 left-0 right-0 bottom-0"></div> */}
         {isDropdownVisible && (
-        <div className="z-50 showme absolute right-0 border border-gray-200 mt-2 py-2 w-[180px] bg-sky-50 text-white rounded-lg shadow-[0_2px_2px_rgb(0,0,0,0.2)]">
+        <div className="z-50 absolute right-0 border border-gray-200 mt-2 py-2 w-[180px] bg-sky-50 text-white rounded-lg shadow-[0_2px_2px_rgb(0,0,0,0.2)]">
           <Link
             href="/profile"
             className="text-left block px-4 py-2 text-gray-800 hover:underline border-b-2 border-gray-200"
