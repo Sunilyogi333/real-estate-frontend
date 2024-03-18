@@ -10,6 +10,10 @@ const e = require("express");
 const { parse } = require("uuid");
 const secretKey = "secretKey";
 const salt = 10;
+const dotenv = require("dotenv");
+dotenv.config();
+
+console.log("name",process.env.name);
 
 router.use(
   cors({
