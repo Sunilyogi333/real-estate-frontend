@@ -10,7 +10,8 @@ const page = () => {
     const { logout } = useContext(AuthContext);
     console.log(logout);
     const router = useRouter()
-    console.log("we are in logout page");
+    // console.log("we are in logout page");
+
     useEffect(() => {
         logout();
     }, [logout]);

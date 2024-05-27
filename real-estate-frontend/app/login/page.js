@@ -10,6 +10,7 @@ import Link from "next/link";
 import Validation from './loginValidation';
 import { useContext } from "react";
 import { AuthContext } from "@/context/authContext";
+import closedEye from "/public/images/icons/eye_closed.png";
 
 const page = () => {
   const [formData, setFormData] = useState({
@@ -37,12 +38,23 @@ const page = () => {
     if (res.data.success) {
       console.log(res.data.user)
       login(res.data.user, true);
+      console.log("herr vai",auth);
       router.push("/");
     } else {
       console.log("res:", res.data);
       setServerError(res.data);
       console.log(serverError);
       console.log("failed");
+    }
+  }
+
+  const toggleEye = () => {
+    const password = document.getElementById("password");
+    // console.log('hi');
+    if (password.type === "password") {
+      password.type = "text";
+    } else {
+      password.type = "password";
     }
   }
   return (
@@ -77,7 +89,7 @@ const page = () => {
                   name="email"
                   placeholder="hi@example.com"
                   onChange={handleInput}
-                  className="mt-1 px-3 p-2 w-full border rounded-md bg-blue-50"
+                  className="mt-1 px-3 p-2 w-full border rounded-md bg-blue-50 outline-none focus:border-blue-400"
                 />
               </div>
 
@@ -93,14 +105,17 @@ const page = () => {
                   { serverError.passwordError}
                   </span>
                 </div>
+                <div className="flex items-center border h-[42px] rounded-md bg-blue-50 focus:border-blue-400 pr-2">
                 <input
                   type="password"
                   id="password"
                   name="password"
                   placeholder="Enter password"
                   onChange={handleInput}
-                  className="mt-1 px-3 p-2 w-full border rounded-md bg-blue-50"
+                  className="mt-1 px-3 p-2 w-full outline-none bg-transparent"
                 />
+                <Image src={closedEye} onClick={toggleEye} className="cursor-pointer h-6 w-6"></Image>
+                </div>  
                 <p className="text-sm text-blue-500 mt-1">
                   forget password?
                 </p>

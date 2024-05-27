@@ -10,26 +10,8 @@ CREATE TABLE users (
     password VARCHAR(255),
     phoneNumber INT,
     date_of_birth DATE,
-    profilePicture VARCHAR(255)
-    verification ENUM('Pending', 'Verifed', 'Rejected'), 
-
-);
-
-/* property *//* database */
-CREATE DATABASE serenity;
-
-/* tables */
-/* users */
-CREATE TABLE users (
-    userId INT PRIMARY KEY AUTO_INCREMENT,
-    username VARCHAR(255),
-    email VARCHAR(255),
-    password VARCHAR(255),
-    phoneNumber INT,
-    date_of_birth DATE,
-    profilePicture VARCHAR(255)
-    verification ENUM('Pending', 'Verifed', 'Rejected'), 
-
+    profilePicture VARCHAR(255),
+    verification ENUM('Pending', 'Verified', 'Rejected')
 );
 
 /* property */
@@ -151,7 +133,7 @@ CREATE TABLE kycForm (
     userPhoto varchar(225), 
     CFPhoto varchar(255), 
     CBPhoto varchar(255), 
-    verification ENUM('Pending', 'Verifed', 'Rejected') DEFAULT 'Pending', 
+    verification ENUM('Pending', 'Verified', 'Rejected') DEFAULT 'Pending', 
     CONSTRAINT uID FOREIGN KEY(uID) REFERENCES users(userId)
 );
 

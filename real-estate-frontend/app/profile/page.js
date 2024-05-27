@@ -109,7 +109,7 @@ const Profile = () => {
   if (!isLoggedIn) {
     return null;
   }
-  
+
   // console.log("Profile Picture herr:", updatedUser.profilePicture)
   console.log("Updated User:", updatedUser);
   if (updatedUser.profilePicture === null) {

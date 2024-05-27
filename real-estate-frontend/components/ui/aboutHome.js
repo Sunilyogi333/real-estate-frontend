@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import Item from '../hero/Item';
 import { CSSTransition, TransitionGroup } from 'react-transition-group';
+import { AuthContext } from '@/context/authContext';
+import { useContext } from 'react';
 
 
 const AboutHome = ({ properties }) => {
@@ -17,6 +19,9 @@ const AboutHome = ({ properties }) => {
 
     return () => clearInterval(intervalId);
   }, [images]);
+ const { auth } = useContext(AuthContext);
+ console.log("auth herr hai",auth);
+ console.log("hellllllllo")
 
   return (
     <>
@@ -36,7 +41,8 @@ const AboutHome = ({ properties }) => {
           ))}
           <div className="w-full h-full mt-8 text-center absolute z-10 top-0 left-0">
             <div className='w-full h-full text-center flex flex-col items-center justify-center'>
-              <h1 className="text-8xl text-white font-bold">Serenity</h1>
+              <h1 className="text-8xl text-white font-bold">Serenity{`${auth}`}</h1>
+              {console.log("auth herr hai",auth)}
               <h2 className='text-4xl text-white font-semibold'>Welcome to Serenity, the most trusted website for all your real estate needs.</h2>
             </div>
           </div>

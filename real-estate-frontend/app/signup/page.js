@@ -16,6 +16,7 @@ function page() {
     name: "",
     email: "",
     password: "",
+    age:11
   });
 
   const [error, setError] = useState({});
@@ -25,7 +26,6 @@ function page() {
     setFormData({ ...formData, [event.target.name]: event.target.value });
     setError({ ...error, [event.target.name]: "" });
   };
-
 
   async function handleSubmit(event) {
     event.preventDefault();
@@ -80,7 +80,7 @@ function page() {
                   name="name"
                   placeholder="Full Name"
                   onChange={handleInput}
-                  className="mt-1 px-3 p-2 w-full border rounded-md bg-blue-50"
+                  className="mt-1 px-3 p-2 w-full border rounded-md bg-blue-50 outline-none focus:border-blue-400"
                 />
               </div>
               <div className="mb-4">
@@ -95,6 +95,7 @@ function page() {
                     {error.email ? error.email : ''}
                     {serverError}
                   </span>
+
                 </div>
                 <input
                   type="text"
@@ -102,7 +103,7 @@ function page() {
                   name="email"
                   placeholder="hi@example.com"
                   onChange={handleInput}
-                  className="mt-1 p-2 px-3 w-full border rounded-md bg-blue-50"
+                  className="mt-1 p-2 px-3 w-full border rounded-md bg-blue-50 outline-none focus:border-blue-400"
                 />
               </div>
 
@@ -124,7 +125,7 @@ function page() {
                   name="password"
                   placeholder="Enter password"
                   onChange={handleInput}
-                  className="mt-1 p-2 px-3 w-full border rounded-md bg-blue-50"
+                  className="mt-1 p-2 px-3 w-full border rounded-md bg-blue-50 outline-none focus:border-blue-400"
                 />
                 <p className="text-xs text-gray-500 mt-1 italic">
                   - password must have 6 characters <br />- include numbers and

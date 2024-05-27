@@ -66,6 +66,7 @@ router.get("/get", function (req, res) {
 
 //signup
 router.post("/signup", function (req, res) {
+  console.log("req.body: ", req.body);
   // Check if the email is already in use
   const checkEmailQuery = "SELECT COUNT(userId) AS count FROM users WHERE email = ?";
   con.query(checkEmailQuery, [req.body.email], function (err, result) {
@@ -109,10 +110,7 @@ router.post("/login", function (req, res) {
   con.query(sql, [req.body.email], (err, result) => {
     if (err) return res.json({ Error: "Login error in server" });
     if (result.length === 0) return res.json({ accountError: "User not found" });
-    bcrypt.compare(
-      req.body.password.toString(),
-      result[0].password,
-      (err, passwordMatch) => {
+    bcrypt.compare(req.body.password.toString(), result[0].password, (err, passwordMatch) => {
         if (err) return res.json({ Error: "Login error in server" });
         if (passwordMatch) {
           const userId = result[0].userId;
@@ -129,8 +127,7 @@ router.post("/login", function (req, res) {
         } else {
           return res.json({ passwordError: "incorrect password" });
         }
-      }
-    );
+      });
   });
 });
 

@@ -53,6 +53,14 @@ const Icons = ({ type }) => {
     url = "/images/icons/verified.png";
     ht = 20;
     wt = 20;
+  } else if (type == "eye_closed"){
+    url = "/images/icons/eye_closed.png";
+    ht = 24;
+    wt = 24;
+  } else if (type == "eye_open"){
+    url = "/images/icons/eye_open.png";
+    ht = 24;
+    wt = 24;
   }
 
   return (

@@ -22,7 +22,7 @@ const AuthContextProvider = ({ children }) => {
   useEffect(() => {
     if (Cookies.get("token")) {
       setToken(Cookies.get("token"));
-      setAuth(true);
+      // setAuth(true); 
     }
   }, []);
 
